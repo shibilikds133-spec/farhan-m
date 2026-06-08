@@ -11,21 +11,29 @@ html {
 }
 
 .nav {
+    border: 0.5px solid #9d9c9c5d;
     position: fixed;
     top: 0;
-    left: 0;
-    width: 100%;
-    height: 100px;
+    left: 32%;
+    width: 35%;
+    height: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px 100px;
     box-sizing: border-box;
     transition: .5s;
     z-index: 1;
+    background-color: #ffffff1c;
+    border-radius: 50px;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 29px;
+
 }
 
 .nav a {
+    font-family: 'Montserrat', sans-serif;
     position: relative;
     display: inline-block;
     padding: 5px 15px;
@@ -33,17 +41,30 @@ html {
     text-transform: uppercase;
     text-decoration: none;
     letter-spacing: .2px;
-    font-size: 24px;
+    font-size: 14px;
     overflow: hidden;
     transition: .2s;
     margin: 0 10px;
+    margin-top: 0px;
+    margin-right: 10px;
+    margin-bottom: 0px;
+    margin-left: 10px;
+    border-radius: 50px;
+    padding: 16px;
+}
+
+.nav a:hover {
+    background-color: #ffffff1c;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .about-section {
     justify-content: center;
     width: 100%;
     height: 100vh;
-    background-image: url("public/about.png");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0)), url("public/about.png");
 
 }
 
