@@ -47,7 +47,7 @@ export default function LandingPage() {
               <CardContent className="p-6 sm:p-8 flex flex-col items-center text-center space-y-6">
                 <div className="space-y-1">
                   <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Current Month</p>
-                  <div className="text-5xl font-bold tabular-nums tracking-tight">₹150</div>
+                  <div className="text-5xl font-bold tabular-nums tracking-tight">₹50</div>
                 </div>
                 <Link href="/pay" className="w-full">
                   <Button size="lg" className="w-full text-lg h-14 rounded-xl shadow-md">

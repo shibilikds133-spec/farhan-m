@@ -1,18 +1,23 @@
 import type { Metadata } from "next";
-import { Poppins, Corben } from "next/font/google";
+import localFont from "next/font/local";
+import { Inter, Noto_Sans_Malayalam } from "next/font/google";
 import "./globals.css";
 
-const poppins = Poppins({
-  variable: "--font-poppins",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
-const corben = Corben({
-  variable: "--font-corben",
-  subsets: ["latin"],
-  weight: ["700"], // Corben 700 is very similar to Cooper Black
+const notoMalayalam = Noto_Sans_Malayalam({
+  variable: "--font-noto-malayalam",
+  subsets: ["malayalam"],
+  display: "swap",
+});
+
+const cooper = localFont({
+  src: "../../public/font/COOPBL.ttf",
+  variable: "--font-cooper-next",
   display: "swap",
 });
 
@@ -28,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${poppins.variable} ${corben.variable} antialiased`}>
+      <body className={`${inter.variable} ${notoMalayalam.variable} ${cooper.variable} antialiased`}>
         {children}
       </body>
     </html>
