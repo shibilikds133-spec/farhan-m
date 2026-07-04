@@ -13,6 +13,8 @@ export default function PayNowPage() {
   const [selectedUpiApp, setSelectedUpiApp] = useState<string | null>(null);
   const [selectedAdmin, setSelectedAdmin] = useState<string>("");
   const [isAdminDropdownOpen, setIsAdminDropdownOpen] = useState(false);
+  const [showQrModal, setShowQrModal] = useState(false);
+  const [isQrInlineOpen, setIsQrInlineOpen] = useState(false);
 
   const admins = [
     { id: "1", name: "Farhan", role: "President" },
@@ -23,8 +25,22 @@ export default function PayNowPage() {
     { id: "6", name: "Anas", role: "Committee Member" },
   ];
 
+  const handleQrClick = () => {
+    if (typeof window !== "undefined" && window.innerWidth >= 768) {
+      setShowQrModal(true);
+    } else {
+      setIsQrInlineOpen(!isQrInlineOpen);
+    }
+  };
+
+  const MockQrCodeSvg = () => (
+    <svg width="180" height="180" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-40 h-40 mx-auto text-slate-800">
+      <path d="M0 0h7v7H0V0zm1 1v5h5V1H1zm1 1h3v3H2V2zM0 22h7v7H0v-7zm1 1v5h5v-5H1zm2 2v-1h1v1H3zm-2-2h1v1H1v-1zm4 0h1v1H5v-1zm1 2h1v1H6v-1zm-4 2h1v1H2v-1zm3 0h1v1H5v-1zM22 0h7v7h-7V0zm1 1v5h5V1h-5zm1 1h3v3h-3V2zM22 22h7v7h-7v-7zm1 1h5v5h-5v-5zm2 2h1v1h-1v-1zM9 1h1v1H9V1zm2 0h1v1h-1V1zm3 0h2v1h-2V1zm4 0h1v1h-1V1zm-9 2h1v1H9V3zm2 0h2v1h-2V3zm3 0h1v1h-1V3zm2 0h1v1h-1V3zm-8 2h2v1H9V5zm3 0h1v1h-1V5zm1 0h1v1h-1V5zm2 0h1v1h-1V5zm-7 2h1v1H9V7zm2 0h1v1h-1V7zm2 0h2v1h-2V7zm3 0h1v1h-1V7zm-8 2h1v1H8V9zm3 0h2v1h-2V9zm4 0h1v1h-1V9zm-8 2h1v1H8v-1zm2 0h1v1h-1v-1zm3 0h1v1h-1v-1zm1 0h1v1h-1v-1zm2 0h1v1h-1v-1zm-9 2h2v1H8v-1zm3 0h1v1h-1v-1zm1 0h1v1h-1v-1zm3 0h1v1h-1v-1zm2 0h1v1h-1v-1zm-9 2h1v1H8v-1zm2 0h1v1h-1v-1zm2 0h2v1h-2v-1zm4 0h1v1h-1v-1zm-9 2h1v1H8v-1zm3 0h2v1h-2v-1zm3 0h1v1h-1v-1zm1 0h1v1h-1v-1zm-8 2h1v1H9v-1zm2 0h1v1h-1v-1zm1 0h1v1h-1v-1zm3 0h1v1h-1v-1zm-7 2h2v1H9v-1zm3 0h1v1h-1v-1zm1 0h1v1h-1v-1zm3 0h1v1h-1v-1zm-7 2h1v1H9v-1zm2 0h1v1h-1v-1zm2 0h2v1h-2v-1zm3 0h1v1h-1v-1z" fill="currentColor"/>
+    </svg>
+  );
+
   return (
-    <div className="min-h-screen bg-secondary/50 flex flex-col items-center justify-center p-4 py-12">
+    <div className="min-h-screen bg-secondary/50 flex flex-col items-center justify-center p-4 py-12 relative">
       <div className="w-full max-w-md space-y-6">
         <Link href="/" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground">
           <ArrowLeft className="mr-2 size-4" /> Back to Home
@@ -125,9 +141,36 @@ export default function PayNowPage() {
                   </div>
 
                   {selectedUpiApp === "other" && (
-                    <div className="pt-2 animate-in fade-in slide-in-from-top-2 duration-200">
-                      <Label htmlFor="upi-id" className="text-xs text-muted-foreground">Enter UPI ID</Label>
-                      <Input id="upi-id" placeholder="example@okhdfcbank" className="mt-1 h-11 bg-background" />
+                    <div className="pt-2 animate-in fade-in slide-in-from-top-2 duration-200 space-y-4">
+                      <div>
+                        <Label htmlFor="upi-id" className="text-xs text-muted-foreground">Enter UPI ID</Label>
+                        <Input id="upi-id" placeholder="example@okhdfcbank" className="mt-1 h-11 bg-background" />
+                      </div>
+                      
+                      <div className="relative flex items-center py-1">
+                        <div className="flex-grow border-t border-slate-200"></div>
+                        <span className="flex-shrink mx-3 text-slate-400 text-[10px] uppercase font-semibold tracking-wider">Or</span>
+                        <div className="flex-grow border-t border-slate-200"></div>
+                      </div>
+
+                      <Button 
+                        type="button" 
+                        variant="outline" 
+                        className="w-full h-11 flex items-center justify-center gap-2 rounded-xl border-[#E5EAF3] hover:bg-slate-50 transition-all"
+                        onClick={handleQrClick}
+                      >
+                        <QrCode className="h-5 w-5 text-primary" />
+                        <span>Show QR Code</span>
+                      </Button>
+
+                      {isQrInlineOpen && (
+                        <div className="pt-2 pb-1 border-t border-slate-100 flex flex-col items-center justify-center animate-in fade-in zoom-in duration-200">
+                          <p className="text-xs font-semibold text-slate-500 mb-2">Scan & Pay ₹100</p>
+                          <div className="border border-slate-200 p-2 rounded-xl bg-white shadow-sm">
+                            <MockQrCodeSvg />
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
@@ -206,6 +249,36 @@ export default function PayNowPage() {
           </CardFooter>
         </Card>
       </div>
+
+      {showQrModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div 
+            className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-all animate-in fade-in duration-200"
+            onClick={() => setShowQrModal(false)}
+          />
+          <div className="relative bg-white rounded-2xl p-6 shadow-2xl border border-slate-100 max-w-sm w-full z-10 flex flex-col items-center animate-in fade-in zoom-in-95 duration-200">
+            <h3 className="text-lg font-bold text-slate-900 mb-2">Scan QR Code</h3>
+            <p className="text-sm text-slate-500 mb-4 text-center">Scan this code using any UPI app to pay ₹100</p>
+            
+            <div className="border border-slate-100 p-4 rounded-2xl bg-white shadow-inner mb-4">
+              <MockQrCodeSvg />
+            </div>
+            
+            <div className="text-center mb-6">
+              <span className="text-2xl font-bold text-slate-900">₹100</span>
+              <p className="text-xs text-slate-400 mt-1">One-time Payment</p>
+            </div>
+            
+            <Button 
+              type="button" 
+              className="w-full h-11 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-medium"
+              onClick={() => setShowQrModal(false)}
+            >
+              Close
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
