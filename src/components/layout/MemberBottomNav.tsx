@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, Receipt, History, User } from "lucide-react";
+import { LayoutDashboard, Receipt, History, User, Users } from "lucide-react";
 
 export function MemberBottomNav() {
   const pathname = usePathname();
@@ -19,9 +19,9 @@ export function MemberBottomNav() {
       icon: History,
     },
     {
-      name: "Receipts",
-      href: "/member/receipts",
-      icon: Receipt,
+      name: "Community",
+      href: "/member/directory",
+      icon: Users,
     },
     {
       name: "Profile",
