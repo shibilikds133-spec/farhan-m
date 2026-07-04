@@ -253,29 +253,68 @@ export default function PayNowPage() {
       {showQrModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div 
-            className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-all animate-in fade-in duration-200"
+            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-all animate-in fade-in duration-200"
             onClick={() => setShowQrModal(false)}
           />
-          <div className="relative bg-white rounded-2xl p-6 shadow-2xl border border-slate-100 max-w-sm w-full z-10 flex flex-col items-center animate-in fade-in zoom-in-95 duration-200">
-            <h3 className="text-lg font-bold text-slate-900 mb-2">Scan QR Code</h3>
-            <p className="text-sm text-slate-500 mb-4 text-center">Scan this code using any UPI app to pay ₹100</p>
-            
-            <div className="border border-slate-100 p-4 rounded-2xl bg-white shadow-inner mb-4">
-              <MockQrCodeSvg />
+          <div className="relative bg-white rounded-2xl shadow-2xl border border-[#E5EAF3] max-w-sm w-full z-10 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            {/* Modal Header */}
+            <div className="bg-[#F6F8FC] border-b border-[#E5EAF3] p-4 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <img src="/logo/logo.webp" alt="SSF Logo" className="h-7 w-auto object-contain" style={{ mixBlendMode: "multiply", filter: "contrast(1.05) grayscale(100%)" }} />
+                <span className="text-sm font-semibold text-slate-900">
+                  <span className="font-cooper font-normal">SSF</span> Alparamba Unit
+                </span>
+              </div>
+              <button 
+                type="button" 
+                className="text-slate-400 hover:text-slate-600 transition-colors p-1"
+                onClick={() => setShowQrModal(false)}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
-            
-            <div className="text-center mb-6">
-              <span className="text-2xl font-bold text-slate-900">₹100</span>
-              <p className="text-xs text-slate-400 mt-1">One-time Payment</p>
+
+            {/* Modal Body */}
+            <div className="p-6 flex flex-col items-center">
+              <span className="bg-green-50 text-green-700 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full border border-green-100 mb-4">
+                Official UPI Terminal
+              </span>
+              
+              <div className="border border-[#E5EAF3] p-4 rounded-2xl bg-white shadow-[0_4px_20px_rgba(0,0,0,0.02)] mb-5">
+                <MockQrCodeSvg />
+              </div>
+
+              {/* Transaction Detail Card */}
+              <div className="w-full bg-[#F6F8FC] border border-[#E5EAF3] rounded-xl p-3.5 space-y-2 mb-6 text-left">
+                <div className="flex justify-between text-xs">
+                  <span className="text-slate-400 font-medium">Payment Purpose</span>
+                  <span className="text-slate-700 font-semibold">Monthly Dues Collection</span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className="text-slate-400 font-medium">Merchant Account</span>
+                  <span className="text-slate-700 font-semibold">SSF Alparamba Unit</span>
+                </div>
+                <div className="border-t border-[#E5EAF3] pt-2.5 flex justify-between items-baseline">
+                  <span className="text-xs text-slate-500 font-bold">Amount to Pay</span>
+                  <span className="text-xl font-bold text-slate-900">₹100.00</span>
+                </div>
+              </div>
+
+              {/* Secure Footer */}
+              <p className="text-[11px] text-slate-400 font-medium flex items-center gap-1.5 mb-4">
+                <ShieldCheck className="size-4 text-green-600" /> Powered by BHIM UPI / Secure Transaction
+              </p>
+
+              <Button 
+                type="button" 
+                className="w-full h-11 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold transition-all"
+                onClick={() => setShowQrModal(false)}
+              >
+                Close Terminal
+              </Button>
             </div>
-            
-            <Button 
-              type="button" 
-              className="w-full h-11 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-medium"
-              onClick={() => setShowQrModal(false)}
-            >
-              Close
-            </Button>
           </div>
         </div>
       )}
