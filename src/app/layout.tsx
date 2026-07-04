@@ -32,8 +32,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} ${notoMalayalam.variable} ${cooper.variable} antialiased`}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.variable} ${notoMalayalam.variable} ${cooper.variable} antialiased`} suppressHydrationWarning>
         {children}
       </body>
     </html>

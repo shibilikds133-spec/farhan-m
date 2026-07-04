@@ -19,8 +19,11 @@ export default function PayNowPage() {
           <ArrowLeft className="mr-2 size-4" /> Back to Home
         </Link>
         
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground"><span className="font-cooper font-normal">SSF</span> Alparamba</h1>
+        <div className="text-center space-y-2 flex flex-col items-center">
+          <img src="/logo/logo.webp" alt="SSF Logo" className="h-14 w-auto object-contain mb-1" style={{ mixBlendMode: "multiply", filter: "contrast(1.05)" }} />
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">
+            <span className="font-cooper font-normal">SSF</span> Alparamba Unit
+          </h1>
           <p className="text-sm text-muted-foreground">Guest Checkout / One-time Payment</p>
         </div>
 
