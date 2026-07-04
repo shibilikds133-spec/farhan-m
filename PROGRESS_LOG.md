@@ -39,3 +39,6 @@ This file tracks the implementation progress, changes, additions, and deletions 
 
 ## 2026-07-04 Update
 * **UI Update Deviation:** The login page UI was completely redesigned based on a custom mockup and specific color palette provided by the user (Background: #F6F8FC, Accent Blue: #2563EB, etc.). **Note: This specific design and UI overhaul was not originally included in the `Architecture_Plan.md`, but was implemented as a deviation per direct user request.**
+* **Logo Transparency & Color Correction:** Fixed the logo's white background clipping issues by refactoring the CSS layering and stacking contexts (removing `relative z-10` from the wrapper and resolving backdrop opacity in the header). This allowed `mix-blend-multiply` to blend natively while preserving the original green and blue brand colors.
+* **Brand Font Compliance:** Applied the strict brand font guidelines from `UI_PLAN_V2.md` to wrap all text references of "SSF" in the `font-cooper` style (only "SSF" uses Cooper Black, whereas "Alparamba Unit" uses standard font styling).
+* **Input UI Polishing:** Removed the distracting double-outline ring offset on the mobile number input box when focused, resolving it to a clean single blue border (`focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-[#2563EB]`).
