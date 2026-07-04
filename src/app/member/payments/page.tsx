@@ -41,29 +41,24 @@ export default function PaymentsPage() {
       </div>
 
       {/* Summary Card */}
-      <div className="bg-gradient-to-br from-[#2563EB] to-[#1D4ED8] rounded-3xl p-6 text-white shadow-lg mb-8 relative overflow-hidden">
-        {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/4" />
-        <div className="absolute bottom-0 left-0 w-24 h-24 bg-blue-400/20 rounded-full blur-xl translate-y-1/3 -translate-x-1/4" />
-        
-        <div className="relative z-10">
-          <div className="flex justify-between items-start mb-6">
-            <div className="flex items-center gap-2 bg-white/20 px-3 py-1.5 rounded-full backdrop-blur-sm border border-white/10">
+      <div className="bg-white rounded-3xl p-6 md:p-8 border border-[#E5EAF3] shadow-sm mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="flex flex-col">
+          <div className="flex items-center gap-2 mb-4">
+            <div className="bg-green-50 text-green-600 px-3 py-1.5 rounded-full border border-green-100 flex items-center gap-1.5">
               <ShieldCheck className="size-4" />
               <span className="text-xs font-bold uppercase tracking-wider">Active Member</span>
             </div>
-            <div className="bg-white/10 p-2 rounded-xl backdrop-blur-sm">
-              <CalendarRange className="size-5" />
-            </div>
           </div>
-          
-          <div className="flex flex-col">
-            <span className="text-blue-100 font-medium mb-1">Total Amount Paid</span>
-            <div className="flex items-baseline gap-1">
-              <span className="text-4xl font-black">₹{totalPaid}</span>
-              <span className="text-blue-200 text-sm font-medium">this year</span>
-            </div>
+          <span className="text-slate-500 font-medium mb-1">Total Amount Paid</span>
+          <div className="flex items-baseline gap-1">
+            <span className="text-4xl md:text-5xl font-black text-slate-900">₹{totalPaid}</span>
+            <span className="text-slate-400 text-sm font-medium">this year</span>
           </div>
+        </div>
+        
+        {/* Visual Graphic for desktop to fill empty space elegantly */}
+        <div className="hidden md:flex size-24 bg-blue-50 text-blue-600 rounded-full items-center justify-center shrink-0">
+          <CalendarRange className="size-10" />
         </div>
       </div>
 
