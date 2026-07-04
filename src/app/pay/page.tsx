@@ -165,7 +165,7 @@ export default function PayNowPage() {
                             <button
                               key={admin.id}
                               type="button"
-                              className={`w-full text-left px-4 py-2.5 rounded-lg transition-colors flex flex-col ${
+                              className={`w-full text-left px-4 py-1.5 rounded-lg transition-colors flex flex-col ${
                                 selectedAdmin === admin.name 
                                   ? "bg-primary/10 text-primary font-medium" 
                                   : "text-slate-700 hover:bg-slate-50"
@@ -175,8 +175,8 @@ export default function PayNowPage() {
                                 setIsAdminDropdownOpen(false);
                               }}
                             >
-                              <span className="font-semibold text-[15px]">{admin.name}</span>
-                              <span className="text-[12px] text-slate-400 font-normal">{admin.role}</span>
+                              <span className="font-semibold text-[14px] leading-tight">{admin.name}</span>
+                              <span className="text-[11px] text-slate-400 font-normal leading-none mt-0.5">{admin.role}</span>
                             </button>
                           ))}
                         </div>
