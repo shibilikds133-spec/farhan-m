@@ -34,30 +34,30 @@ export function MemberDetailDrawer({ isOpen, onClose, member }: MemberDetailDraw
   if (!isOpen || !member) return null;
 
   return (
-    <div className="fixed inset-0 z-[60] flex flex-col justify-end">
+    <div className="fixed inset-0 z-[60] flex flex-col justify-end md:justify-center md:items-center md:p-4">
       {/* Backdrop */}
       <div 
         className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity animate-in fade-in duration-200"
         onClick={onClose}
       />
       
-      {/* Drawer */}
-      <div className="relative w-full max-w-md mx-auto bg-white rounded-t-3xl shadow-2xl p-6 pb-safe animate-in slide-in-from-bottom-full duration-300">
+      {/* Drawer / Modal */}
+      <div className="relative w-full max-w-md mx-auto bg-white rounded-t-3xl md:rounded-3xl shadow-2xl p-6 pb-safe md:pb-6 animate-in slide-in-from-bottom-full md:slide-in-from-bottom-0 md:zoom-in-95 duration-300">
         
-        {/* Handle bar for visual cue */}
-        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-slate-200 rounded-full" />
+        {/* Handle bar for visual cue (Mobile Only) */}
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-slate-200 rounded-full md:hidden" />
         
         {/* Close button */}
         <button 
           type="button" 
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 bg-slate-50 rounded-full"
+          className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 bg-slate-50 rounded-full transition-colors"
         >
           <X className="size-5" />
         </button>
 
         {/* Header */}
-        <div className="flex flex-col items-center mt-4 mb-6">
+        <div className="flex flex-col items-center mt-4 mb-6 md:mt-2">
           <div className="size-20 bg-blue-50 text-blue-700 flex items-center justify-center rounded-full text-2xl font-bold border-4 border-white shadow-sm mb-3">
             {member.initials}
           </div>
@@ -93,7 +93,7 @@ export function MemberDetailDrawer({ isOpen, onClose, member }: MemberDetailDraw
         </div>
 
         {/* Action Button */}
-        <div className="mt-6 mb-4">
+        <div className="mt-6 mb-4 md:mb-0">
           <a 
             href={`tel:${member.phone}`}
             className="w-full flex items-center justify-center gap-2 h-14 bg-green-500 hover:bg-green-600 text-white rounded-xl font-bold text-lg shadow-sm transition-colors"
