@@ -1,19 +1,12 @@
 import { Bell } from "lucide-react";
-import Image from "next/image";
 
 export function MemberHeader() {
   return (
     <header className="sticky top-0 z-40 w-full bg-[#F6F8FC] border-b border-[#E5EAF3]">
       <div className="flex h-16 items-center justify-between px-4 md:px-6">
         <div className="flex items-center gap-3">
-          <div className="relative size-10 rounded-full overflow-hidden bg-slate-200 border-2 border-white shadow-sm">
-            <Image 
-              src="/logo/logo.webp" 
-              alt="Avatar" 
-              fill 
-              className="object-cover" 
-              style={{ mixBlendMode: "multiply" }}
-            />
+          <div className="relative size-10 flex items-center justify-center rounded-full overflow-hidden bg-blue-100 border-2 border-white shadow-sm">
+            <span className="text-[13px] font-bold text-blue-700">SA</span>
           </div>
           <div className="flex flex-col">
             <span className="text-xs text-slate-500 font-medium leading-none mb-1">Welcome back,</span>
