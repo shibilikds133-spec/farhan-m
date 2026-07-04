@@ -11,6 +11,7 @@ export default function SuccessPage() {
   const method = searchParams.get("method") || "upi"
   const admin = searchParams.get("admin") || ""
   const phone = searchParams.get("phone") || "Guest User"
+  const amount = searchParams.get("amount") || "100"
 
   return (
     <div className="min-h-screen bg-green-50/30 flex flex-col items-center justify-center p-4 py-12">
@@ -43,7 +44,7 @@ export default function SuccessPage() {
             <div className="w-full rounded-xl bg-secondary/50 p-5 space-y-3">
               <div className="text-center pb-3 border-b border-border/50">
                 <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Amount Paid</span>
-                <div className="text-3xl font-bold tabular-nums">₹100</div>
+                <div className="text-3xl font-bold tabular-nums">₹{amount}</div>
               </div>
               
               <div className="space-y-2 text-sm pt-2 text-left">
@@ -74,7 +75,7 @@ export default function SuccessPage() {
           </CardContent>
           <CardFooter className="flex-col gap-3 px-8 pb-8">
             <div className="flex gap-3 w-full">
-              <Link href={`/receipt/TXN-8924719?method=${method}&admin=${encodeURIComponent(admin)}&phone=${encodeURIComponent(phone)}`} className="flex-1">
+              <Link href={`/receipt/TXN-8924719?method=${method}&admin=${encodeURIComponent(admin)}&phone=${encodeURIComponent(phone)}&amount=${amount}`} className="flex-1">
                 <Button variant="outline" className="w-full">
                   <Download className="mr-2 size-4" /> Receipt
                 </Button>

@@ -13,12 +13,12 @@ export default function ReceiptPage({ params }: { params: Promise<{ id: string }
   const searchParams = useSearchParams()
   
   const receiptId = resolvedParams.id || "TXN-8924719"
-  const amount = "100"
   const date = "02 Jul 2026, 18:35"
   
   const method = searchParams.get("method") || "upi"
   const admin = searchParams.get("admin") || ""
   const phone = searchParams.get("phone") || "Guest Member"
+  const amount = searchParams.get("amount") || "100"
   
   return (
     <div className="min-h-screen bg-secondary/50 p-4 py-8 flex flex-col items-center">
