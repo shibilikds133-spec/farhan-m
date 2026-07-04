@@ -7,17 +7,18 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-secondary/50 flex flex-col">
       {/* Header / Nav */}
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="sticky top-0 z-50 w-full border-b bg-[#F6F8FC]">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2 font-semibold">
-            {/* Logo placeholder */}
-            <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-              <HeartHandshake className="size-5" />
-            </div>
-            <span className="hidden sm:inline-block"><span className="font-cooper font-normal tracking-wide">SSF</span> Alparamba</span>
+            <img src="/logo/logo.webp" alt="SSF Logo" className="h-10 w-auto object-contain" style={{ mixBlendMode: "multiply", filter: "contrast(1.05)" }} />
+            <span className="hidden sm:inline-block text-lg">
+              <span className="font-cooper font-normal">SSF</span> Alparamba Unit
+            </span>
           </div>
           <nav className="flex items-center gap-2 sm:gap-4">
-            <Button size="sm" className="rounded-full px-4">Member Login</Button>
+            <Link href="/login">
+              <Button size="sm" className="rounded-full px-4">Member Login</Button>
+            </Link>
           </nav>
         </div>
       </header>
@@ -114,10 +115,10 @@ export default function LandingPage() {
       <footer className="border-t bg-background py-10">
         <div className="container flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2 font-semibold">
-            <div className="h-6 w-6 rounded bg-primary/10 flex items-center justify-center text-primary">
-              <HeartHandshake className="size-3" />
-            </div>
-            <span className="text-sm"><span className="font-cooper font-normal tracking-wide">SSF</span> Alparamba Unit</span>
+            <img src="/logo/logo.webp" alt="SSF Logo" className="h-6 w-auto object-contain" style={{ mixBlendMode: "multiply", filter: "contrast(1.05)" }} />
+            <span className="text-sm">
+              <span className="font-cooper font-normal">SSF</span> Alparamba Unit
+            </span>
           </div>
           <p className="text-sm text-muted-foreground text-center md:text-left">
             Committed to complete financial transparency. 

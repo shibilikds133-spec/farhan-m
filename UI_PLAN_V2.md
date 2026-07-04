@@ -7,19 +7,43 @@
 A trust-first community finance tool. Every screen should communicate transparency and accountability to members while giving non-technical committee volunteers admin superpowers with zero training curve. Benchmark feel: Stripe Dashboard Ã— CRED Ã— Linear, filtered through restrained, respectful cultural branding.
 
 ### 2. Design System (Tokens)
+
 - **Color Tokens**:
-  - Primary Background:   #F8FAFC
-  - Secondary Background: #F1F5F9
+  - Primary Background: `#F6F8FC`
+  - Secondary Background: `#E5EAF3`
+  - Surface/Card: `#FFFFFF`
+
   - Text Primary: `#0F172A`
-  - Accent Green (Success): `#16A34A`
+  - Text Secondary: `#64748B`
+
   - Accent Blue (Primary Actions): `#2563EB`
-  - Accent Gold: `#C8A96B` (ceremonial only)
-  - Accent Red (Defaulters/Errors): `#DC2626`
+  - Accent Blue Hover: `#1D4ED8`
+
+  - Accent Green (Secondary / Success): `#16A34A`
+  - Accent Green Light: `#DCFCE7`
+
+  - Accent Gold (Ceremonial Only): `#C8A96B`
+  - Accent Red (Errors / Defaulters): `#DC2626`
+
+  - Border: `#D9E2EC`
+  - Divider: `#E5EAF3`
+
 - **Typography**: Inter (English) + Noto Sans Malayalam. Tabular-figure style for numerals.
-- **Radius**: Cards 20px, Buttons 12px, Inputs 10px, Pills Full.
-- **Shadows**: Soft only `0 1px 2px rgba(15,23,42,0.04), 0 4px 12px rgba(15,23,42,0.06)`.
-- **Motion**: Subtle 150-300ms ease-outs. No gimmicky animations.
-- **Cultural Identity**: Low-opacity geometric/arabesque patterns (3-5%) on hero and receipts. Bismillah/greeting respectfully sized.
+
+- **Radius**:
+  - Cards: 20px
+  - Buttons: 12px
+  - Inputs: 10px
+  - Pills: Full
+
+- **Shadows**:
+  `0 1px 2px rgba(15,23,42,0.04), 0 4px 12px rgba(15,23,42,0.06)`
+
+- **Motion**:
+  Subtle 150–300ms ease-out. No gimmicky animations.
+
+- **Cultural Identity**:
+  Low-opacity geometric/arabesque patterns (3–5%) on hero and receipts. Bismillah/greeting respectfully sized.
 
 #### 2.1 Expanded Token Rules
 - **Preserved color system**: Do not replace, rename, or visually reinterpret the existing palette. The required color values remain:

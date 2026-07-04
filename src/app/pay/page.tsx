@@ -1,11 +1,17 @@
+"use client";
+
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { ArrowLeft, CreditCard, Banknote, ShieldCheck } from "lucide-react"
+import { ArrowLeft, CreditCard, Banknote, ShieldCheck, Smartphone, QrCode } from "lucide-react"
 import Link from "next/link"
 
 export default function PayNowPage() {
+  const [paymentMethod, setPaymentMethod] = useState<"upi" | "cash">("upi");
+  const [selectedUpiApp, setSelectedUpiApp] = useState<string | null>(null);
+
   return (
     <div className="min-h-screen bg-secondary/50 flex flex-col items-center justify-center p-4 py-12">
       <div className="w-full max-w-md space-y-6">
@@ -13,8 +19,11 @@ export default function PayNowPage() {
           <ArrowLeft className="mr-2 size-4" /> Back to Home
         </Link>
         
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground"><span className="font-cooper font-normal">SSF</span> Alparamba</h1>
+        <div className="text-center space-y-2 flex flex-col items-center">
+          <img src="/logo/logo.webp" alt="SSF Logo" className="h-14 w-auto object-contain mb-1" style={{ mixBlendMode: "multiply", filter: "contrast(1.05)" }} />
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">
+            <span className="font-cooper font-normal">SSF</span> Alparamba Unit
+          </h1>
           <p className="text-sm text-muted-foreground">Guest Checkout / One-time Payment</p>
         </div>
 
@@ -33,36 +42,91 @@ export default function PayNowPage() {
             <div className="rounded-lg border bg-accent/50 p-4 space-y-3">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Current Month</span>
-                <span className="font-medium">₹150</span>
+                <span className="font-medium">₹50</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Arrears (1 Month)</span>
-                <span className="font-medium text-destructive">₹150</span>
+                <span className="font-medium text-destructive">₹50</span>
               </div>
               <div className="pt-3 border-t border-border/50 flex justify-between font-bold text-lg">
                 <span>Total Due</span>
-                <span>₹300</span>
+                <span>₹100</span>
               </div>
             </div>
 
             <div className="space-y-3">
               <Label>Payment Method</Label>
               <div className="grid grid-cols-2 gap-3">
-                <Button variant="outline" className="h-16 flex flex-col gap-1 border-primary/50 bg-primary/5">
-                  <CreditCard className="size-5 text-primary" />
+                <Button 
+                  type="button"
+                  variant="outline" 
+                  className={`h-16 flex flex-col gap-1 transition-all ${paymentMethod === "upi" ? "border-primary bg-primary/5 text-primary" : "text-muted-foreground hover:text-foreground"}`}
+                  onClick={() => setPaymentMethod("upi")}
+                >
+                  <CreditCard className="size-5" />
                   <span className="text-xs">UPI App</span>
                 </Button>
-                <Button variant="outline" className="h-16 flex flex-col gap-1 text-muted-foreground">
+                <Button 
+                  type="button"
+                  variant="outline" 
+                  className={`h-16 flex flex-col gap-1 transition-all ${paymentMethod === "cash" ? "border-primary bg-primary/5 text-primary" : "text-muted-foreground hover:text-foreground"}`}
+                  onClick={() => setPaymentMethod("cash")}
+                >
                   <Banknote className="size-5" />
                   <span className="text-xs">Cash Handover</span>
                 </Button>
               </div>
+
+              {/* UPI Options Dropdown/Area */}
+              {paymentMethod === "upi" && (
+                <div className="mt-4 p-4 rounded-xl border bg-secondary/30 space-y-3 animate-in fade-in slide-in-from-top-2 duration-200">
+                  <p className="text-xs font-medium text-muted-foreground">Select your UPI App</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button 
+                      variant="outline" 
+                      className={`justify-center h-12 hover:bg-accent/50 transition-colors ${selectedUpiApp === "gpay" ? "border-primary bg-primary/5 shadow-sm" : "bg-background"}`}
+                      onClick={() => setSelectedUpiApp("gpay")}
+                    >
+                      <img src="/icons/googlepay.svg" alt="GPay" className="h-6 w-auto object-contain" />
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className={`justify-center h-12 hover:bg-accent/50 transition-colors ${selectedUpiApp === "phonepe" ? "border-primary bg-primary/5 shadow-sm" : "bg-background"}`}
+                      onClick={() => setSelectedUpiApp("phonepe")}
+                    >
+                      <img src="/icons/phonepe.svg" alt="PhonePe" className="h-6 w-auto object-contain" />
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className={`justify-center h-12 hover:bg-accent/50 transition-colors ${selectedUpiApp === "paytm" ? "border-primary bg-primary/5 shadow-sm" : "bg-background"}`}
+                      onClick={() => setSelectedUpiApp("paytm")}
+                    >
+                      <img src="/icons/paytm.svg" alt="Paytm" className="h-5 w-auto object-contain" />
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className={`justify-center gap-2 h-12 hover:bg-accent/50 transition-colors ${selectedUpiApp === "other" ? "border-primary bg-primary/5 shadow-sm" : "bg-background"}`}
+                      onClick={() => setSelectedUpiApp("other")}
+                    >
+                      <QrCode className="h-5 w-5 text-primary" />
+                      <span className="font-medium">Other</span>
+                    </Button>
+                  </div>
+
+                  {selectedUpiApp === "other" && (
+                    <div className="pt-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                      <Label htmlFor="upi-id" className="text-xs text-muted-foreground">Enter UPI ID</Label>
+                      <Input id="upi-id" placeholder="example@okhdfcbank" className="mt-1 h-11 bg-background" />
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </CardContent>
           <CardFooter className="flex-col gap-4">
             <Link href="/success" className="w-full">
               <Button size="lg" className="w-full text-lg h-14 rounded-xl">
-                Pay ₹300 Now
+                {paymentMethod === "upi" ? "Pay ₹100 via UPI" : "Record ₹100 Cash"}
               </Button>
             </Link>
             <p className="text-xs text-muted-foreground flex items-center justify-center gap-1 font-medium">

@@ -7,8 +7,11 @@ export default function SuccessPage() {
   return (
     <div className="min-h-screen bg-green-50/30 flex flex-col items-center justify-center p-4 py-12">
       <div className="w-full max-w-sm space-y-6 animate-in fade-in zoom-in duration-300">
-        <div className="text-center space-y-2">
-          <h1 className="text-2xl font-bold tracking-tight text-foreground"><span className="font-cooper font-normal">SSF</span> Alparamba</h1>
+        <div className="text-center space-y-2 flex flex-col items-center">
+          <img src="/logo/logo.webp" alt="SSF Logo" className="h-12 w-auto object-contain mb-2" style={{ mixBlendMode: "multiply", filter: "contrast(1.05)" }} />
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">
+            <span className="font-cooper font-normal">SSF</span> Alparamba Unit
+          </h1>
         </div>
 
         <Card className="shadow-lg border-green-100 overflow-hidden relative">
@@ -30,7 +33,7 @@ export default function SuccessPage() {
             <div className="w-full rounded-xl bg-secondary/50 p-5 space-y-3">
               <div className="text-center pb-3 border-b border-border/50">
                 <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Amount Paid</span>
-                <div className="text-3xl font-bold tabular-nums">₹300</div>
+                <div className="text-3xl font-bold tabular-nums">₹100</div>
               </div>
               
               <div className="space-y-2 text-sm pt-2">
