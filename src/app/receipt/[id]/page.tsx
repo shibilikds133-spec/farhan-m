@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react"
+import React, { Suspense } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -8,7 +8,7 @@ import { Printer, Share2, HeartHandshake, QrCode, ArrowLeft } from "lucide-react
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 
-export default function ReceiptPage({ params }: { params: Promise<{ id: string }> }) {
+function ReceiptPageContent({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = React.use(params)
   const searchParams = useSearchParams()
   
@@ -121,5 +121,18 @@ export default function ReceiptPage({ params }: { params: Promise<{ id: string }
         </p>
       </div>
     </div>
+  )
+}
+
+export default function ReceiptPage({ params }: { params: Promise<{ id: string }> }) {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-secondary/50 p-4 py-8 flex flex-col items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+        <p className="text-sm text-muted-foreground mt-4">Generating receipt...</p>
+      </div>
+    }>
+      <ReceiptPageContent params={params} />
+    </Suspense>
   )
 }
