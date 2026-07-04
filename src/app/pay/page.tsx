@@ -241,7 +241,7 @@ export default function PayNowPage() {
           </CardContent>
           <CardFooter className="flex-col gap-4">
             <Link 
-              href={isButtonDisabled ? "#" : "/success"} 
+              href={isButtonDisabled ? "#" : `/success?method=${paymentMethod}&admin=${encodeURIComponent(selectedAdmin)}&phone=${encodeURIComponent(memberQuery)}`} 
               className={`w-full ${isButtonDisabled ? "pointer-events-none" : ""}`}
             >
               <Button 
