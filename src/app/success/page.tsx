@@ -30,7 +30,7 @@ export default function SuccessPage() {
             <div className="w-full rounded-xl bg-secondary/50 p-5 space-y-3">
               <div className="text-center pb-3 border-b border-border/50">
                 <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Amount Paid</span>
-                <div className="text-3xl font-bold tabular-nums">₹300</div>
+                <div className="text-3xl font-bold tabular-nums">₹100</div>
               </div>
               
               <div className="space-y-2 text-sm pt-2">
