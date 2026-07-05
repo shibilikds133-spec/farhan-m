@@ -63,3 +63,7 @@ This file tracks the implementation progress, changes, additions, and deletions 
 * **Admin Panel Enhancement (Planned):** Create a section in the admin dashboard to Add, Edit, and Delete support contact numbers (Name, Role, Phone) that will dynamically populate the Contact Admins drawer in the Member Profile.
 
 * **Event Receipt Differentiation:** Modified the receipt page (\/receipt/[id]\) to visually differentiate 'Special Event' receipts from regular 'Monthly Dues'. Special event receipts now feature an Amber color theme, a Gift icon instead of the handshake, and specific 'Event Name' text based on URL parameters.
+
+* **Landing Page Redesign:** Replaced guest checkout with a 2-column member-focused split layout. Added Mobile Number + OTP login form to hero section and highlighted community benefits (Blood Support, Community Connection, Secure Membership).
+
+* **Landing Page Redesign Update:** Completely cloned the uploaded reference image for the hero section with pixel-perfect accuracy, preserving layout, spacing, and typography while applying the requested visual styling (gradients, shadows, glass effects).
