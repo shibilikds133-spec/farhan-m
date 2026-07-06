@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { cn } from "@/lib/utils"
 
 interface TransparentLogoProps {
   src: string
@@ -9,7 +10,7 @@ interface TransparentLogoProps {
 }
 
 export function TransparentLogo({ src, alt, className }: TransparentLogoProps) {
-  const [dataUrl, setDataUrl] = useState(src)
+  const [dataUrl, setDataUrl] = useState<string | null>(null)
 
   useEffect(() => {
     const img = new Image()
@@ -38,5 +39,11 @@ export function TransparentLogo({ src, alt, className }: TransparentLogoProps) {
     }
   }, [src])
 
-  return <img src={dataUrl} alt={alt} className={className} />
+  return (
+    <img 
+      src={dataUrl || src} 
+      alt={alt} 
+      className={cn(className, !dataUrl ? "opacity-0" : "opacity-100 transition-opacity duration-300")} 
+    />
+  )
 }

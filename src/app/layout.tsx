@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Inter, Noto_Sans_Malayalam } from "next/font/google";
+import { Inter, Noto_Sans_Malayalam, Quicksand } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 
@@ -13,6 +13,13 @@ const inter = Inter({
 const notoMalayalam = Noto_Sans_Malayalam({
   variable: "--font-noto-malayalam",
   subsets: ["malayalam"],
+  display: "swap",
+  preload: false,
+});
+
+const quicksand = Quicksand({
+  variable: "--font-quicksand",
+  subsets: ["latin"],
   display: "swap",
 });
 
@@ -34,7 +41,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${notoMalayalam.variable} ${cooper.variable} antialiased`} suppressHydrationWarning>
+      <body className={`${inter.variable} ${notoMalayalam.variable} ${cooper.variable} ${quicksand.variable} antialiased`} suppressHydrationWarning>
         {children}
         <Toaster position="bottom-right" richColors />
       </body>

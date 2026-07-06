@@ -8,7 +8,7 @@ const MOCK_TRANSACTIONS: Transaction[] = [
     amount: 100,
     method: "UPI",
     status: "COMPLETED",
-    receiptUrl: "/receipt/tx_1?method=UPI&admin=Admin&phone=Member"
+    receiptUrl: "/receipt/tx_1?method=UPI&admin=Admin&phone=Member&source=member"
   },
   {
     id: "tx_2",
@@ -16,7 +16,7 @@ const MOCK_TRANSACTIONS: Transaction[] = [
     amount: 100,
     method: "CASH",
     status: "COMPLETED",
-    receiptUrl: "/receipt/tx_2?method=CASH&admin=Farhan%20(President)&phone=Member"
+    receiptUrl: "/receipt/tx_2?method=CASH&admin=Farhan%20(President)&phone=Member&source=member"
   },
   {
     id: "tx_3",
@@ -24,7 +24,7 @@ const MOCK_TRANSACTIONS: Transaction[] = [
     amount: 150,
     method: "UPI",
     status: "COMPLETED",
-    receiptUrl: "/receipt/tx_3?method=UPI&admin=Admin&phone=Member"
+    receiptUrl: "/receipt/tx_3?method=UPI&admin=Admin&phone=Member&source=member"
   },
 ];
 
