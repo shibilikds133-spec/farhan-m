@@ -7,8 +7,11 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ArrowLeft, CreditCard, Banknote, ShieldCheck, Smartphone, QrCode, ChevronDown, AlertCircle } from "lucide-react"
 import Link from "next/link"
+import { useSearchParams } from "next/navigation"
 
 export default function PayNowPage() {
+  const searchParams = useSearchParams();
+  const source = searchParams.get("source");
   const [paymentMethod, setPaymentMethod] = useState<"upi" | "cash">("upi");
   const [selectedUpiApp, setSelectedUpiApp] = useState<string | null>(null);
   const [selectedAdmin, setSelectedAdmin] = useState<string>("");
@@ -79,8 +82,8 @@ export default function PayNowPage() {
   return (
     <div className="min-h-screen bg-secondary/50 flex flex-col items-center justify-center p-4 py-12 relative">
       <div className="w-full max-w-md space-y-6">
-        <Link href="/" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground">
-          <ArrowLeft className="mr-2 size-4" /> Back to Home
+        <Link href={source === "member" ? "/member/dashboard" : "/"} className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground">
+          <ArrowLeft className="mr-2 size-4" /> {source === "member" ? "Back to Dashboard" : "Back to Home"}
         </Link>
         
         <div className="text-center space-y-2 flex flex-col items-center">
@@ -351,7 +354,7 @@ export default function PayNowPage() {
           </CardContent>
           <CardFooter className="flex-col gap-4">
             <Link 
-              href={isButtonDisabled ? "#" : `/success?method=${paymentMethod}&admin=${encodeURIComponent(selectedAdmin)}&phone=${encodeURIComponent(memberQuery)}&amount=${finalAmount}${activeTab === 'event' ? '&category=special_event' : ''}`} 
+              href={isButtonDisabled ? "#" : `/success?method=${paymentMethod}&admin=${encodeURIComponent(selectedAdmin)}&phone=${encodeURIComponent(memberQuery)}&amount=${finalAmount}${activeTab === 'event' ? '&category=special_event' : ''}${source === 'member' ? '&source=member' : ''}`} 
               className={`w-full ${isButtonDisabled ? "pointer-events-none" : ""}`}
             >
               <Button 

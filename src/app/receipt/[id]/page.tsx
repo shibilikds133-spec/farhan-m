@@ -1,141 +1,117 @@
 "use client";
 
-import React, { Suspense } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Printer, Share2, HeartHandshake, QrCode, ArrowLeft, Gift } from "lucide-react"
-import Link from "next/link"
-import { useSearchParams } from "next/navigation"
+import React, { Suspense } from "react";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
+import { PremiumReceiptCard } from "@/components/receipt/PremiumReceiptCard";
+
+import confetti from 'canvas-confetti';
+import Image from 'next/image';
 
 function ReceiptPageContent({ params }: { params: Promise<{ id: string }> }) {
-  const resolvedParams = React.use(params)
-  const searchParams = useSearchParams()
-  
-  const receiptId = resolvedParams.id || "TXN-8924719"
-  const date = "02 Jul 2026, 18:35"
-  
-  const method = searchParams.get("method") || "upi"
-  const admin = searchParams.get("admin") || ""
-  const phone = searchParams.get("phone") || "Guest Member"
-  const amount = searchParams.get("amount") || "100"
-  const category = searchParams.get("category") || "dues"
-  
-  const isEvent = category === "special_event"
-  
+  const resolvedParams = React.use(params);
+  const searchParams = useSearchParams();
+
+  const receiptId = resolvedParams.id || "TXN-8924719";
+  const method = searchParams.get("method") || "upi";
+  const admin = searchParams.get("admin") || "";
+  const phone = searchParams.get("phone") || "Guest Member";
+  const amount = searchParams.get("amount") || "100";
+  const category = searchParams.get("category") || "dues";
+  const source = searchParams.get("source");
+
+  React.useEffect(() => {
+    // Fire confetti on load
+    const duration = 3000;
+    const end = Date.now() + duration;
+
+    const frame = () => {
+      confetti({
+        particleCount: 5,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0 },
+        colors: ['#063b78', '#ab2e28', '#f8d13b']
+      });
+      confetti({
+        particleCount: 5,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1 },
+        colors: ['#063b78', '#ab2e28', '#f8d13b']
+      });
+
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    };
+    frame();
+  }, []);
+
   return (
-    <div className="min-h-screen bg-secondary/50 p-4 py-8 flex flex-col items-center">
-      <div className="w-full max-w-[210mm] space-y-6"> {/* A4/A5 width container for print context */}
+    <main className="min-h-[100svh] overflow-x-hidden bg-gradient-to-b from-[#E6F0FA] to-[#F6F8FC] px-4 pb-5 pt-4 sm:px-6 sm:py-10 flex flex-col">
+      <div className="mx-auto w-full max-w-[430px] sm:max-w-[620px] flex-1 flex flex-col justify-start sm:justify-center">
         
-        {/* Screen-only controls */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 print:hidden">
-          <Link href={`/success?method=${method}&admin=${encodeURIComponent(admin)}&phone=${encodeURIComponent(phone)}`} className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground self-start sm:self-auto">
-            <ArrowLeft className="mr-2 size-4" /> Back
+        {/* Branding Header with Floating Back Button */}
+        <div className="relative mb-4 sm:mb-8 flex flex-col items-center justify-center">
+          <Link
+            href={source === "member" ? "/member/dashboard" : "/"}
+            className="absolute left-0 top-2 p-2.5 sm:p-3 text-slate-500 hover:text-slate-900 hover:bg-white/60 rounded-full transition-colors print:hidden shadow-sm backdrop-blur-sm border border-slate-200/50"
+            title="Go Back"
+          >
+            <ArrowLeft className="size-5" />
           </Link>
-          <div className="flex items-center gap-2 w-full sm:w-auto">
-            <Button variant="outline" className="flex-1 sm:flex-none">
-              <Share2 className="mr-2 size-4" /> Share PDF
-            </Button>
-            <Button className="flex-1 sm:flex-none">
-              <Printer className="mr-2 size-4" /> Print
-            </Button>
+          
+          <div className="flex flex-col items-center justify-center gap-2 mt-4 sm:mt-2 animate-in slide-in-from-top-4 fade-in duration-500">
+            <Image 
+              src="/logo/logo-transparent.webp" 
+              alt="SSF Logo" 
+              width={64} 
+              height={64} 
+              className="object-contain w-16 h-16 md:w-[88px] md:h-[88px] mix-blend-multiply"
+              priority
+            />
+            <h1 className="text-xl md:text-3xl font-cooper text-[#063b78] tracking-tight text-center mt-1">
+              SSF Alparamba Unit
+            </h1>
           </div>
         </div>
 
-        {/* The Receipt Document */}
-        <Card className="bg-background border-none shadow-xl overflow-hidden relative print:shadow-none print:border-border">
-          {/* Subtle accent border & Arabesque pattern */}
-          <div className={`absolute top-0 left-0 w-full h-2 ${isEvent ? "bg-amber-500" : "bg-[#C8A96B]"}`} />
-          <div className="absolute inset-0 opacity-[0.02] pointer-events-none" 
-               style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)', backgroundSize: '24px 24px' }} />
-          
-          <CardContent className="p-8 sm:p-12 space-y-10 relative z-10">
-            {/* Header */}
-            <div className="flex items-start justify-between border-b border-border/50 pb-8">
-              <div className="flex items-center gap-3">
-                <div className={`h-12 w-12 rounded-xl flex items-center justify-center ${isEvent ? "bg-amber-100 text-amber-600" : "bg-primary/10 text-primary"}`}>
-                  {isEvent ? <Gift className="size-6" /> : <HeartHandshake className="size-6" />}
-                </div>
-                <div>
-                  <h1 className="text-2xl font-bold tracking-tight text-foreground leading-none">
-                    <span className="font-cooper font-normal">SSF</span> Alparamba
-                  </h1>
-                  <p className="text-sm text-muted-foreground mt-1">Official Payment Receipt</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-sm text-muted-foreground uppercase tracking-widest font-medium mb-1">Receipt No.</p>
-                <p className="font-mono font-bold text-lg">{receiptId}</p>
-              </div>
-            </div>
+        <div className="animate-in fade-in zoom-in-95 duration-500 delay-150 fill-mode-both">
+          <PremiumReceiptCard
+            receiptId={receiptId}
+            method={method}
+            admin={admin}
+            phone={phone}
+            amount={amount}
+            category={category}
+          />
+        </div>
 
-            {/* Details */}
-            <div className="grid sm:grid-cols-2 gap-8">
-              <div className="space-y-6">
-                <div>
-                  <p className="text-sm text-muted-foreground mb-1">Received With Thanks From</p>
-                  <p className="font-bold text-xl">{phone}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-muted-foreground mb-1">Towards</p>
-                  <p className="font-medium">{isEvent ? "Special Event Contribution" : "Monthly Contribution (Varisankhya)"}</p>
-                  <p className="text-sm text-muted-foreground">{isEvent ? "Event Name" : "July 2026 + 1 Month Arrears"}</p>
-                </div>
-              </div>
-              
-              <div className="bg-secondary/30 rounded-xl p-6 flex flex-col justify-center items-end text-right border border-border/50">
-                <p className="text-sm text-muted-foreground uppercase tracking-widest font-medium mb-2">Amount Paid</p>
-                <p className="text-5xl font-bold tabular-nums text-foreground mb-4">₹{amount}</p>
-                <Badge className="bg-green-100 text-green-700 hover:bg-green-100 border-none px-3 py-1 text-sm rounded-full">
-                  <span className="h-1.5 w-1.5 rounded-full bg-green-500 mr-2 inline-block"></span>
-                  Payment Successful
-                </Badge>
-              </div>
-            </div>
-
-            {/* Footer / Meta */}
-            <div className="flex items-end justify-between border-t border-border/50 pt-8 mt-8">
-              <div className="space-y-1 text-left">
-                <p className="text-sm"><span className="text-muted-foreground">Date:</span> <span className="font-medium">{date}</span></p>
-                <p className="text-sm">
-                  <span className="text-muted-foreground">Payment Method:</span>{" "}
-                  <span className="font-medium">{method === "cash" ? "Cash Handover" : "UPI App"}</span>
-                </p>
-                <p className="text-sm">
-                  <span className="text-muted-foreground">{method === "cash" ? "Collected By:" : "Verified By:"}</span>{" "}
-                  <span className="font-medium">{method === "cash" ? admin : "Digital Portal"}</span>
-                </p>
-              </div>
-              
-              <div className="flex flex-col items-center text-center gap-2">
-                <div className="h-16 w-16 bg-white p-1 rounded-md border shadow-sm flex items-center justify-center">
-                  <QrCode className="size-full text-foreground/80" />
-                </div>
-                <p className="text-[10px] text-muted-foreground max-w-[120px] leading-tight">
-                  Scan to verify authenticity of this receipt
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        <p className="text-center text-xs text-muted-foreground print:hidden">
-          This receipt is computer generated and does not require a physical signature.
+      </div>
+      
+      {/* Footer placed at the bottom */}
+      <div className="mx-auto mt-5 w-full max-w-[430px] sm:max-w-[620px]">
+        <p className="px-4 text-center text-[11px] sm:text-xs font-semibold leading-relaxed text-slate-400 print:hidden">
+          This receipt is computer generated by SSF Alparamba Unit.
         </p>
       </div>
-    </div>
-  )
+    </main>
+  );
 }
 
 export default function ReceiptPage({ params }: { params: Promise<{ id: string }> }) {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-secondary/50 p-4 py-8 flex flex-col items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-        <p className="text-sm text-muted-foreground mt-4">Generating receipt...</p>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen flex-col items-center justify-center bg-[#F6F8FC] p-4">
+          <div className="size-8 animate-spin rounded-full border-b-2 border-[#2563EB]" />
+          <p className="mt-4 text-sm font-medium text-slate-500">Generating receipt...</p>
+        </div>
+      }
+    >
       <ReceiptPageContent params={params} />
     </Suspense>
-  )
+  );
 }

@@ -67,3 +67,12 @@ This file tracks the implementation progress, changes, additions, and deletions 
 * **Landing Page Redesign:** Replaced guest checkout with a 2-column member-focused split layout. Added Mobile Number + OTP login form to hero section and highlighted community benefits (Blood Support, Community Connection, Secure Membership).
 
 * **Landing Page Redesign Update:** Completely cloned the uploaded reference image for the hero section with pixel-perfect accuracy, preserving layout, spacing, and typography while applying the requested visual styling (gradients, shadows, glass effects).
+
+## 2026-07-05 Update (UI & Architecture Polish)
+* **Mobile Menu Architecture Deviation:** Built a "Circular Reveal" animated dropdown menu for the User Profile using `framer-motion` (implemented across both Landing Page and Dashboard). **Deviation from UI Plan:** The architecture assumed standard hamburger/sidebar menus, but a bespoke ripple-expansion glass menu was created per user request.
+* **Dashboard Layout Restructure:** Refactored `MemberHeader.tsx`. Placed Logo + Unit Name on the left, and Avatar + Notifications on the right. **Deviation from UI Plan:** Moved the 'Welcome Greeting' text completely out of the header and placed it in the dashboard body (`page.tsx`) to improve visual hierarchy.
+* **OTP Input Redesign:** Converted the standard single text-input OTP field into a 4-box "Pin Code" style input using native React state and array mapping for a premium UX.
+* **Dynamic Logo Transparency:** Created a `TransparentLogo` component that utilizes the HTML5 Canvas API to dynamically strip out white background pixels (`rgb > 240`) from the user's uploaded logo, allowing it to blend seamlessly into the gradient UI.
+* **Auth Flow Deviation:** Removed the full-page "Verification Successful" Checkmark replacement screen. Replaced it with a lightweight Toast notification (`sonner`) that preserves the context of the OTP form before smoothly routing to the dashboard.
+* **Authentication Architecture Shift (OTP to PIN):** Shifted the authentication language from SMS-based OTPs to Admin-generated 4-Digit PINs (`InlineLoginForm.tsx`). Text labels were changed (e.g. "Send OTP" -> "Continue", "One-Time Password" -> "4-Digit PIN") to reflect the new system where users receive their login PIN directly from the admin.
+* **Performance Optimization:** Disabled preloading (`preload: false`) for `Noto_Sans_Malayalam` in `layout.tsx` to fix the "Resource preloaded but not used" console warning and save initial bandwidth on the landing page.
