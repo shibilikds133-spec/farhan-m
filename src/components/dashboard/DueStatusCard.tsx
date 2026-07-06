@@ -34,7 +34,7 @@ export function DueStatusCard({ amountDue }: DueStatusCardProps) {
 
       {!isClear && (
         <div className="mt-5">
-          <Link href="/pay" className="block w-full">
+          <Link href="/pay?source=member" className="block w-full">
             <Button className="w-full bg-[#2563EB] hover:bg-blue-700 text-white rounded-xl h-12 text-base font-semibold shadow-sm transition-all flex items-center justify-center gap-2">
               Pay Now <ChevronRight className="size-4" />
             </Button>

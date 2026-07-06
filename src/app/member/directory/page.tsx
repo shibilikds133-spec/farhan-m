@@ -179,22 +179,26 @@ export default function DirectoryPage() {
 
       {/* Blood Group Filter Modal/Drawer */}
       {isBloodGroupModalOpen && (
-        <div className="fixed inset-0 z-50 flex flex-col justify-end items-center p-4 pb-8 md:justify-center md:p-4">
+        <div className="fixed inset-0 z-[100] flex flex-col justify-end items-center p-0 md:justify-center md:p-4">
           <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity animate-in fade-in duration-200" onClick={() => setIsBloodGroupModalOpen(false)} />
-          <div className="relative w-full max-w-sm mx-auto bg-white rounded-3xl shadow-2xl p-6 md:p-6 animate-in slide-in-from-bottom-full md:slide-in-from-bottom-0 md:zoom-in-95 duration-300">
+          <div className="relative w-full max-w-sm mx-auto bg-white rounded-t-[32px] rounded-b-none md:rounded-3xl shadow-2xl pt-8 pb-10 px-6 md:p-6 animate-in slide-in-from-bottom-full md:slide-in-from-bottom-0 md:zoom-in-95 duration-300">
+            
+            {/* Mobile Drag Indicator */}
+            <div className="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-6 md:hidden" />
+
             <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-2">
-                <div className="p-2 bg-red-50 rounded-lg text-red-500">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 bg-red-50 rounded-xl text-red-500">
                   <HeartPulse className="size-5" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-slate-900">Select Blood Group</h3>
-                  <p className="text-xs text-slate-500">Find emergency blood donors</p>
+                  <h3 className="font-bold text-slate-900 text-lg leading-tight">Select Blood Group</h3>
+                  <p className="text-xs text-slate-500 font-medium">Find emergency blood donors</p>
                 </div>
               </div>
               <button 
                 onClick={() => setIsBloodGroupModalOpen(false)}
-                className="p-2 text-slate-400 hover:bg-slate-50 rounded-full"
+                className="p-2.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 rounded-full transition-colors"
               >
                 <X className="size-5" />
               </button>

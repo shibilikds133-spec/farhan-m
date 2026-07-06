@@ -144,7 +144,7 @@ export default function LandingPage() {
       <footer className="border-t border-white/70 bg-white/70 py-10 backdrop-blur-2xl">
         <div className="container flex flex-col items-center justify-between gap-6 md:flex-row">
           <div className="flex items-center gap-2 font-semibold">
-            <img src="/logo/logo.webp" alt="SSF Logo" className="h-8 w-auto object-contain opacity-90" style={{ mixBlendMode: "multiply" }} />
+            <TransparentLogo src="/logo/logo.webp" alt="SSF Logo" className="h-8 w-auto object-contain opacity-90 drop-shadow-sm" />
             <span className="text-sm font-bold text-slate-500">
               <span className="font-cooper font-normal text-slate-700">SSF</span> Alparamba Unit
             </span>

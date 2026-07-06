@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { PhoneIcon, ArrowRight, ShieldAlert, ShieldCheck, ArrowLeft, Send } from "lucide-react";
+import { PhoneIcon, ArrowRight, ShieldAlert, ShieldCheck, ArrowLeft, Send, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 
@@ -23,6 +23,34 @@ export function InlineLoginForm({ isGlass = false }: InlineLoginFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // Only allow digits, strip spaces and special characters
+    let val = e.target.value.replace(/\D/g, "");
+    
+    // Handle autofill that bypasses onPaste (e.g., Chrome autofilling "+91 9876543210")
+    if (val.length >= 12 && val.startsWith("91")) {
+      val = val.slice(2);
+    } else if (val.length >= 14 && val.startsWith("0091")) {
+      val = val.slice(4);
+    }
+
+    setPhone(val.slice(0, 15));
+  };
+
+  const handlePhonePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    let pasted = e.clipboardData.getData("text/plain").replace(/\D/g, "");
+    
+    // Smart sanitation for common Indian formats
+    if (pasted.length >= 12 && pasted.startsWith("91")) {
+      pasted = pasted.slice(2);
+    } else if (pasted.length >= 14 && pasted.startsWith("0091")) {
+      pasted = pasted.slice(4);
+    }
+    
+    setPhone(pasted.slice(0, 15));
+  };
   
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -70,12 +98,11 @@ export function InlineLoginForm({ isGlass = false }: InlineLoginFormProps) {
     if (!phone) return;
     
     setIsLoading(true);
-    // Simulate API call for sending OTP
+    // Simulate moving to next step
     setTimeout(() => {
       setIsLoading(false);
       setStep("otp");
-      toast.success(`OTP sent to ${phone}`);
-    }, 800);
+    }, 500);
   };
 
   const handleOtpSubmit = (e: React.FormEvent) => {
@@ -95,8 +122,8 @@ export function InlineLoginForm({ isGlass = false }: InlineLoginFormProps) {
           router.push("/member/dashboard");
         }, 800);
       } else {
-        toast.error("Invalid OTP. For demo purposes, use '1234'.");
-        setError("Invalid OTP"); // Keep for styling if needed, but UI text removed
+        toast.error("Invalid Code. For demo purposes, use '1234'.");
+        setError("Invalid Code"); // Keep for styling if needed, but UI text removed
       }
     }, 1000);
   };
@@ -120,16 +147,21 @@ export function InlineLoginForm({ isGlass = false }: InlineLoginFormProps) {
             </label>
             <div className="relative flex items-center group">
               <PhoneIcon className={`absolute pointer-events-none ${isGlass ? 'left-5 size-5 text-slate-400' : 'left-4 top-3.5 h-5 w-5 text-[#2563EB]'}`} strokeWidth={isGlass ? 2.5 : 2} />
-              {isGlass && <div className="pointer-events-none absolute left-13 text-lg font-bold text-slate-400">+91</div>}
+              
+              <div className={`absolute flex items-center pointer-events-none ${isGlass ? 'left-13 text-lg font-bold text-slate-400' : 'left-12 text-base font-bold text-slate-500'}`}>
+                +91
+              </div>
+
               <input
                 id="phone"
                 type="tel"
-                placeholder={isGlass ? "98765 43210" : "Enter 10-digit number"}
+                placeholder={isGlass ? "98765 43210" : "Enter mobile number"}
                 className={inputClass}
-                style={{ paddingLeft: isGlass ? "6.25rem" : "3.25rem" }}
-                maxLength={10}
+                style={{ paddingLeft: isGlass ? "6.25rem" : "5.5rem" }}
+                maxLength={15}
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={handlePhoneChange}
+                onPaste={handlePhonePaste}
                 disabled={isLoading}
                 required
               />
@@ -141,14 +173,14 @@ export function InlineLoginForm({ isGlass = false }: InlineLoginFormProps) {
             className={btnClass} 
             disabled={isLoading}
           >
-            {isLoading ? "Sending OTP..." : isGlass ? (
+            {isLoading ? "Please wait..." : isGlass ? (
               <>
-                <Send className="size-5 mr-2" />
-                Send OTP
+                Continue
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </>
             ) : (
               <>
-                Get OTP
+                Continue
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </>
             )}
@@ -165,16 +197,16 @@ export function InlineLoginForm({ isGlass = false }: InlineLoginFormProps) {
               </button>
               
               <div className="text-center mb-6">
-                <h2 className="text-xl font-bold text-slate-900 mb-2">Verify OTP</h2>
+                <h2 className="text-xl font-bold text-slate-900 mb-2">Enter PIN</h2>
                 <p className="text-sm text-slate-500">
-                  Enter the 4-digit code sent to <span className="font-bold text-slate-900">{isGlass ? `+91 ${phone}` : phone}</span>
+                  Enter the 4-digit code provided by the admin for <span className="font-bold text-slate-900">+91 {phone}</span>
                 </p>
               </div>
 
               <form onSubmit={handleOtpSubmit} className="space-y-6">
                 <div className="space-y-2">
                   <Label htmlFor="otp" className={isGlass ? "block text-sm font-extrabold text-slate-700" : "text-[11px] font-bold uppercase tracking-wider text-[#2563EB]"}>
-                    One-Time Password
+                    4-Digit PIN
                   </Label>
                   <div className="flex justify-center gap-3 sm:gap-4 mt-4 mb-2" onPaste={(e) => {
                     e.preventDefault();
@@ -216,7 +248,7 @@ export function InlineLoginForm({ isGlass = false }: InlineLoginFormProps) {
 
               <div className="mt-6 text-center pt-4">
                 <p className="text-sm text-slate-500">
-                  Didn't receive the code? <button className="text-blue-600 hover:underline font-semibold ml-1">Resend OTP</button>
+                  Forgot your PIN? <button type="button" className="text-blue-600 hover:underline font-semibold ml-1">Contact Admin</button>
                 </p>
               </div>
         </div>
