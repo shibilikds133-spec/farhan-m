@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense } from "react"
+import { useState, Suspense, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -19,6 +19,27 @@ function PayNowContent() {
   const [showQrModal, setShowQrModal] = useState(false);
   const [isQrInlineOpen, setIsQrInlineOpen] = useState(false);
   const [memberQuery, setMemberQuery] = useState("");
+
+  // Preload receipt images in the background without causing lag
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const preloadImages = () => {
+      const images = ["/recept.svg", "/logo/logo-transparent.svg"];
+      images.forEach((src) => {
+        const img = new window.Image();
+        img.src = src;
+      });
+    };
+
+    // requestIdleCallback ensures this only runs when the browser is completely free
+    if ('requestIdleCallback' in window) {
+      // @ts-ignore - TS might not know requestIdleCallback in all environments
+      window.requestIdleCallback(preloadImages);
+    } else {
+      setTimeout(preloadImages, 2500);
+    }
+  }, []);
 
   // New states for Dues & Events
   const [activeTab, setActiveTab] = useState<"dues" | "event">("dues");
@@ -80,15 +101,15 @@ function PayNowContent() {
   );
 
   return (
-    <div className="min-h-screen bg-secondary/50 flex flex-col items-center justify-center p-4 py-12 relative">
+    <div className="min-h-screen bg-secondary/50 flex flex-col items-center justify-center p-4 py-12 relative transition-colors duration-300 dark:bg-slate-900">
       <div className="w-full max-w-md space-y-6">
         <Link href={source === "member" ? "/member/dashboard" : "/"} className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground">
           <ArrowLeft className="mr-2 size-4" /> {source === "member" ? "Back to Dashboard" : "Back to Home"}
         </Link>
         
         <div className="text-center space-y-2 flex flex-col items-center">
-          <img src="/logo/logo.webp" alt="SSF Logo" className="h-14 w-auto object-contain mb-1" style={{ mixBlendMode: "multiply", filter: "contrast(1.05)" }} />
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">
+          <img src="/logo/logo-transparent.svg" alt="SSF Logo" className="h-14 w-auto object-contain mb-1" />
+          <h1 className="text-2xl font-bold tracking-tight text-foreground dark:text-slate-50">
             <span className="font-cooper font-normal">SSF</span> Alparamba Unit
           </h1>
           <p className="text-sm text-muted-foreground">Guest Checkout / One-time Payment</p>
@@ -106,17 +127,18 @@ function PayNowContent() {
                 id="phone" 
                 placeholder="Enter your 10 digit number" 
                 type="tel" 
+                className="bg-white dark:bg-slate-900/50 dark:border-slate-700 dark:text-slate-50 dark:focus-visible:ring-blue-500/30 dark:focus-visible:border-blue-500/50"
                 value={memberQuery}
                 onChange={(e) => setMemberQuery(e.target.value)}
               />
             </div>
             
             {/* Category Tabs */}
-            <div className="bg-secondary/50 p-1 rounded-xl flex items-center mb-2">
+            <div className="bg-secondary/50 p-1 rounded-xl flex items-center mb-2 dark:bg-slate-800">
               <button
                 type="button"
                 onClick={() => setActiveTab("dues")}
-                className={`flex-1 text-sm font-medium py-2.5 rounded-lg transition-all ${activeTab === "dues" ? "bg-white text-primary shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+                className={`flex-1 text-sm font-medium py-2.5 rounded-lg transition-all ${activeTab === "dues" ? "bg-white text-primary shadow-sm dark:bg-slate-700 dark:text-blue-400" : "text-muted-foreground hover:text-foreground dark:hover:text-slate-200"}`}
               >
                 Monthly Dues
               </button>
@@ -124,7 +146,7 @@ function PayNowContent() {
                 <button
                   type="button"
                   onClick={() => setActiveTab("event")}
-                  className={`flex-1 text-sm font-medium py-2.5 rounded-lg transition-all ${activeTab === "event" ? "bg-white text-primary shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+                  className={`flex-1 text-sm font-medium py-2.5 rounded-lg transition-all ${activeTab === "event" ? "bg-white text-primary shadow-sm dark:bg-slate-700 dark:text-blue-400" : "text-muted-foreground hover:text-foreground dark:hover:text-slate-200"}`}
                 >
                   Special Event
                 </button>
@@ -134,16 +156,16 @@ function PayNowContent() {
             {/* Tab Contents */}
             <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
               {activeTab === "dues" ? (
-                <div className="rounded-xl border bg-accent/30 p-4 space-y-4">
+                <div className="rounded-xl border bg-accent/30 p-4 space-y-4 dark:bg-slate-800/50 dark:border-slate-700">
                   <div className="space-y-3">
                     <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Select Pending Months</Label>
                     <div className="space-y-2">
                       {mockPendingMonths.map((month) => (
-                        <label key={month.id} className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${selectedMonths.includes(month.id) ? "bg-white border-primary shadow-sm" : "bg-white/50 border-border/50 hover:bg-white"}`}>
-                          <div className={`size-5 rounded-md border flex items-center justify-center transition-colors ${selectedMonths.includes(month.id) ? "bg-primary border-primary text-white" : "border-slate-300 bg-white"}`}>
+                        <label key={month.id} className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${selectedMonths.includes(month.id) ? "bg-white border-primary shadow-sm dark:bg-blue-500/10 dark:border-blue-500/50" : "bg-white/50 border-border/50 hover:bg-white dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700"}`}>
+                          <div className={`size-5 rounded-md border flex items-center justify-center transition-colors ${selectedMonths.includes(month.id) ? "bg-primary border-primary text-white dark:bg-blue-600 dark:border-blue-600" : "border-slate-300 bg-white dark:bg-slate-700 dark:border-slate-600"}`}>
                             {selectedMonths.includes(month.id) && <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="size-3.5"><polyline points="20 6 9 17 4 12"></polyline></svg>}
                           </div>
-                          <span className={`text-sm font-medium ${selectedMonths.includes(month.id) ? "text-slate-900" : "text-slate-600"}`}>{month.label}</span>
+                          <span className={`text-sm font-medium ${selectedMonths.includes(month.id) ? "text-slate-900 dark:text-slate-50" : "text-slate-600 dark:text-slate-300"}`}>{month.label}</span>
                         </label>
                       ))}
                     </div>
@@ -152,31 +174,31 @@ function PayNowContent() {
                   <div className="pt-2">
                     <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 block">Contribution Tier</Label>
                     <div className="grid grid-cols-2 gap-2">
-                      <button type="button" onClick={() => setDuesTier(50)} className={`p-3 rounded-xl border flex flex-col items-center justify-center gap-0.5 transition-all ${duesTier === 50 ? "bg-primary/5 border-primary text-primary" : "bg-white border-slate-200 text-slate-500 hover:border-primary/40"}`}>
+                      <button type="button" onClick={() => setDuesTier(50)} className={`p-3 rounded-xl border flex flex-col items-center justify-center gap-0.5 transition-all ${duesTier === 50 ? "bg-primary/5 border-primary text-primary dark:bg-blue-500/10 dark:border-blue-500/50 dark:text-blue-400" : "bg-white border-slate-200 text-slate-500 hover:border-primary/40 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-400 dark:hover:border-blue-500/40"}`}>
                         <span className="font-bold text-lg leading-none">₹50</span>
                         <span className="text-[10px] uppercase tracking-wider">Base / Month</span>
                       </button>
-                      <button type="button" onClick={() => setDuesTier(100)} className={`p-3 rounded-xl border flex flex-col items-center justify-center gap-0.5 transition-all ${duesTier === 100 ? "bg-primary/5 border-primary text-primary" : "bg-white border-slate-200 text-slate-500 hover:border-primary/40"}`}>
+                      <button type="button" onClick={() => setDuesTier(100)} className={`p-3 rounded-xl border flex flex-col items-center justify-center gap-0.5 transition-all ${duesTier === 100 ? "bg-primary/5 border-primary text-primary dark:bg-blue-500/10 dark:border-blue-500/50 dark:text-blue-400" : "bg-white border-slate-200 text-slate-500 hover:border-primary/40 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-400 dark:hover:border-blue-500/40"}`}>
                         <span className="font-bold text-lg leading-none">₹100</span>
                         <span className="text-[10px] uppercase tracking-wider">Premium / Month</span>
                       </button>
                     </div>
                   </div>
 
-                  <div className="pt-3 border-t border-border/50 flex justify-between items-baseline mt-2">
+                  <div className="pt-3 border-t border-border/50 flex justify-between items-baseline mt-2 dark:border-slate-700">
                     <span className="text-slate-500 font-medium">Total Dues</span>
-                    <span className="font-bold text-2xl text-slate-900">₹{finalAmount}</span>
+                    <span className="font-bold text-2xl text-slate-900 dark:text-slate-50">₹{finalAmount}</span>
                   </div>
                 </div>
               ) : (
-                <div className="rounded-xl border bg-accent/30 p-4 space-y-4">
-                  <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/50 rounded-xl p-3 flex items-start gap-3">
-                    <div className="bg-amber-100 p-1.5 rounded-lg text-amber-600 mt-0.5">
+                <div className="rounded-xl border bg-accent/30 p-4 space-y-4 dark:bg-slate-800/50 dark:border-slate-700">
+                  <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/50 rounded-xl p-3 flex items-start gap-3 dark:from-amber-900/20 dark:to-orange-900/20 dark:border-amber-700/30">
+                    <div className="bg-amber-100 p-1.5 rounded-lg text-amber-600 mt-0.5 dark:bg-amber-900/50 dark:text-amber-400">
                       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                     </div>
                     <div>
-                      <h4 className="text-sm font-bold text-amber-900">Ramadan Relief Fund</h4>
-                      <p className="text-xs text-amber-700/80 mt-0.5 leading-snug">Your generous contributions help those in need during this special month.</p>
+                      <h4 className="text-sm font-bold text-amber-900 dark:text-amber-300">Ramadan Relief Fund</h4>
+                      <p className="text-xs text-amber-700/80 mt-0.5 leading-snug dark:text-amber-200/70">Your generous contributions help those in need during this special month.</p>
                     </div>
                   </div>
 
@@ -187,7 +209,7 @@ function PayNowContent() {
                       <Input 
                         type="number" 
                         placeholder="0" 
-                        className="pl-9 h-14 text-lg font-bold bg-white" 
+                        className="pl-9 h-14 text-lg font-bold bg-white dark:bg-slate-900/50 dark:border-slate-700 dark:text-slate-50 dark:focus-visible:ring-blue-500/30 dark:focus-visible:border-blue-500/50" 
                         value={customAmount}
                         onChange={(e) => setCustomAmount(e.target.value)}
                         min="30"
@@ -209,7 +231,7 @@ function PayNowContent() {
                 <Button 
                   type="button"
                   variant="outline" 
-                  className={`h-16 flex flex-col gap-1 transition-all ${paymentMethod === "upi" ? "border-primary bg-primary/5 text-primary" : "text-muted-foreground hover:text-foreground"}`}
+                  className={`h-16 flex flex-col gap-1 transition-all ${paymentMethod === "upi" ? "border-primary bg-primary/5 text-primary dark:bg-blue-500/10 dark:text-blue-400 dark:border-blue-500/50" : "text-muted-foreground hover:text-foreground dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700 dark:hover:text-slate-200"}`}
                   onClick={() => setPaymentMethod("upi")}
                 >
                   <CreditCard className="size-5" />
@@ -218,7 +240,7 @@ function PayNowContent() {
                 <Button 
                   type="button"
                   variant="outline" 
-                  className={`h-16 flex flex-col gap-1 transition-all ${paymentMethod === "cash" ? "border-primary bg-primary/5 text-primary" : "text-muted-foreground hover:text-foreground"}`}
+                  className={`h-16 flex flex-col gap-1 transition-all ${paymentMethod === "cash" ? "border-primary bg-primary/5 text-primary dark:bg-blue-500/10 dark:text-blue-400 dark:border-blue-500/50" : "text-muted-foreground hover:text-foreground dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700 dark:hover:text-slate-200"}`}
                   onClick={() => setPaymentMethod("cash")}
                 >
                   <Banknote className="size-5" />
@@ -228,33 +250,33 @@ function PayNowContent() {
 
               {/* UPI Options Dropdown/Area */}
               {paymentMethod === "upi" && (
-                <div className="mt-4 p-4 rounded-xl border bg-secondary/30 space-y-3 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="mt-4 p-4 rounded-xl border bg-secondary/30 space-y-3 animate-in fade-in slide-in-from-top-2 duration-200 dark:bg-slate-800/50 dark:border-slate-700">
                   <p className="text-xs font-medium text-muted-foreground">Select your UPI App</p>
                   <div className="grid grid-cols-2 gap-2">
                     <Button 
                       variant="outline" 
-                      className={`justify-center h-12 hover:bg-accent/50 transition-colors ${selectedUpiApp === "gpay" ? "border-primary bg-primary/5 shadow-sm" : "bg-background"}`}
+                      className={`justify-center h-12 hover:bg-accent/50 transition-colors ${selectedUpiApp === "gpay" ? "border-primary bg-primary/5 shadow-sm dark:bg-blue-500/10 dark:border-blue-500/50" : "bg-background dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700"}`}
                       onClick={() => setSelectedUpiApp("gpay")}
                     >
                       <img src="/icons/googlepay.svg" alt="GPay" className="h-6 w-auto object-contain" />
                     </Button>
                     <Button 
                       variant="outline" 
-                      className={`justify-center h-12 hover:bg-accent/50 transition-colors ${selectedUpiApp === "phonepe" ? "border-primary bg-primary/5 shadow-sm" : "bg-background"}`}
+                      className={`justify-center h-12 hover:bg-accent/50 transition-colors ${selectedUpiApp === "phonepe" ? "border-primary bg-primary/5 shadow-sm dark:bg-blue-500/10 dark:border-blue-500/50" : "bg-background dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700"}`}
                       onClick={() => setSelectedUpiApp("phonepe")}
                     >
                       <img src="/icons/phonepe.svg" alt="PhonePe" className="h-6 w-auto object-contain" />
                     </Button>
                     <Button 
                       variant="outline" 
-                      className={`justify-center h-12 hover:bg-accent/50 transition-colors ${selectedUpiApp === "paytm" ? "border-primary bg-primary/5 shadow-sm" : "bg-background"}`}
+                      className={`justify-center h-12 hover:bg-accent/50 transition-colors ${selectedUpiApp === "paytm" ? "border-primary bg-primary/5 shadow-sm dark:bg-blue-500/10 dark:border-blue-500/50" : "bg-background dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700"}`}
                       onClick={() => setSelectedUpiApp("paytm")}
                     >
                       <img src="/icons/paytm.svg" alt="Paytm" className="h-5 w-auto object-contain" />
                     </Button>
                     <Button 
                       variant="outline" 
-                      className={`justify-center gap-2 h-12 hover:bg-accent/50 transition-colors ${selectedUpiApp === "other" ? "border-primary bg-primary/5 shadow-sm" : "bg-background"}`}
+                      className={`justify-center gap-2 h-12 hover:bg-accent/50 transition-colors ${selectedUpiApp === "other" ? "border-primary bg-primary/5 shadow-sm dark:bg-blue-500/10 dark:border-blue-500/50" : "bg-background dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700"}`}
                       onClick={() => setSelectedUpiApp("other")}
                     >
                       <QrCode className="h-5 w-5 text-primary" />
@@ -266,19 +288,19 @@ function PayNowContent() {
                     <div className="pt-2 animate-in fade-in slide-in-from-top-2 duration-200 space-y-4">
                       <div>
                         <Label htmlFor="upi-id" className="text-xs text-muted-foreground">Enter UPI ID</Label>
-                        <Input id="upi-id" placeholder="example@okhdfcbank" className="mt-1 h-11 bg-background" />
+                        <Input id="upi-id" placeholder="example@okhdfcbank" className="mt-1 h-11 bg-background dark:bg-slate-900/50 dark:border-slate-700 dark:text-slate-50 dark:focus-visible:ring-blue-500/30 dark:focus-visible:border-blue-500/50" />
                       </div>
                       
                       <div className="relative flex items-center py-1">
-                        <div className="flex-grow border-t border-slate-200"></div>
+                        <div className="flex-grow border-t border-slate-200 dark:border-slate-700"></div>
                         <span className="flex-shrink mx-3 text-slate-400 text-[10px] uppercase font-semibold tracking-wider">Or</span>
-                        <div className="flex-grow border-t border-slate-200"></div>
+                        <div className="flex-grow border-t border-slate-200 dark:border-slate-700"></div>
                       </div>
 
                       <Button 
                         type="button" 
                         variant="outline" 
-                        className="w-full h-11 flex items-center justify-center gap-2 rounded-xl border-[#E5EAF3] hover:bg-slate-50 transition-all"
+                        className="w-full h-11 flex items-center justify-center gap-2 rounded-xl border-[#E5EAF3] hover:bg-slate-50 transition-all dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700"
                         onClick={handleQrClick}
                       >
                         <QrCode className="h-5 w-5 text-primary" />
@@ -300,7 +322,7 @@ function PayNowContent() {
 
               {/* Cash Handover Options (Admin Dropdown) */}
               {paymentMethod === "cash" && (
-                <div className="mt-4 p-4 rounded-xl border bg-secondary/30 space-y-3 animate-in fade-in slide-in-from-top-2 duration-200 relative">
+                <div className="mt-4 p-4 rounded-xl border bg-secondary/30 space-y-3 animate-in fade-in slide-in-from-top-2 duration-200 relative dark:bg-slate-800/50 dark:border-slate-700">
                   <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                     Received By
                   </Label>
@@ -308,7 +330,7 @@ function PayNowContent() {
                   <div className="relative">
                     <button
                       type="button"
-                      className="flex h-12 w-full items-center justify-between rounded-xl border border-[#E5EAF3] bg-background px-4 py-2 text-base text-left transition-all hover:bg-slate-50/50 focus:outline-none focus:ring-1 focus:ring-primary"
+                      className="flex h-12 w-full items-center justify-between rounded-xl border border-[#E5EAF3] bg-background px-4 py-2 text-base text-left transition-all hover:bg-slate-50/50 focus:outline-none focus:ring-1 focus:ring-primary dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700"
                       onClick={() => setIsAdminDropdownOpen(!isAdminDropdownOpen)}
                     >
                       <span className={selectedAdmin ? "text-foreground font-medium" : "text-muted-foreground"}>
@@ -325,15 +347,15 @@ function PayNowContent() {
                           className="fixed inset-0 z-20" 
                           onClick={() => setIsAdminDropdownOpen(false)}
                         />
-                        <div className="absolute left-0 right-0 mt-2 z-30 max-h-40 overflow-auto rounded-xl border border-[#E5EAF3] bg-white p-1 shadow-lg animate-in fade-in slide-in-from-top-2 duration-150">
+                        <div className="absolute left-0 right-0 mt-2 z-30 max-h-40 overflow-auto rounded-xl border border-[#E5EAF3] bg-white p-1 shadow-lg animate-in fade-in slide-in-from-top-2 duration-150 dark:border-slate-700 dark:bg-slate-800">
                           {admins.map((admin) => (
                             <button
                               key={admin.id}
                               type="button"
                               className={`w-full text-left px-4 py-1.5 rounded-lg transition-colors flex flex-col ${
                                 selectedAdmin === admin.name 
-                                  ? "bg-primary/10 text-primary font-medium" 
-                                  : "text-slate-700 hover:bg-slate-50"
+                                  ? "bg-primary/10 text-primary font-medium dark:bg-blue-500/15 dark:text-blue-400" 
+                                  : "text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-700"
                               }`}
                               onClick={() => {
                                 setSelectedAdmin(admin.name);
@@ -378,12 +400,12 @@ function PayNowContent() {
             className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-all animate-in fade-in duration-200"
             onClick={() => setShowQrModal(false)}
           />
-          <div className="relative bg-white rounded-2xl shadow-2xl border border-[#E5EAF3] max-w-sm w-full z-10 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+          <div className="relative bg-white rounded-2xl shadow-2xl border border-[#E5EAF3] max-w-sm w-full z-10 overflow-hidden animate-in fade-in zoom-in-95 duration-200 dark:bg-slate-900 dark:border-slate-700">
             {/* Modal Header */}
-            <div className="bg-[#F6F8FC] border-b border-[#E5EAF3] p-4 flex items-center justify-between">
+            <div className="bg-[#F6F8FC] border-b border-[#E5EAF3] p-4 flex items-center justify-between dark:bg-slate-800 dark:border-slate-700">
               <div className="flex items-center gap-2">
-                <img src="/logo/logo.webp" alt="SSF Logo" className="h-7 w-auto object-contain" style={{ mixBlendMode: "multiply", filter: "contrast(1.05)" }} />
-                <span className="text-sm font-semibold text-slate-900">
+                <img src="/logo/logo-transparent.svg" alt="SSF Logo" className="h-7 w-auto object-contain" />
+                <span className="text-sm font-semibold text-slate-900 dark:text-slate-50">
                   <span className="font-cooper font-normal">SSF</span> Alparamba Unit
                 </span>
               </div>
@@ -404,12 +426,12 @@ function PayNowContent() {
                 Official UPI Terminal
               </span>
               
-              <div className="border border-[#E5EAF3] p-4 rounded-2xl bg-white shadow-[0_4px_20px_rgba(0,0,0,0.02)] mb-5">
+              <div className="border border-[#E5EAF3] p-4 rounded-2xl bg-white shadow-[0_4px_20px_rgba(0,0,0,0.02)] mb-5 dark:border-slate-700 dark:bg-slate-800">
                 <MockQrCodeSvg />
               </div>
 
               {/* Transaction Detail Card */}
-              <div className="w-full bg-[#F6F8FC] border border-[#E5EAF3] rounded-xl p-3.5 space-y-2 mb-6 text-left">
+              <div className="w-full bg-[#F6F8FC] border border-[#E5EAF3] rounded-xl p-3.5 space-y-2 mb-6 text-left dark:bg-slate-800 dark:border-slate-700">
                 <div className="flex justify-between text-xs">
                   <span className="text-slate-400 font-medium">Payment Purpose</span>
                   <span className="text-slate-700 font-semibold">Monthly Dues Collection</span>
