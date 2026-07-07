@@ -25,7 +25,7 @@ function PayNowContent() {
     if (typeof window === "undefined") return;
 
     const preloadImages = () => {
-      const images = ["/recept.svg", "/logo/logo-transparent.webp"];
+      const images = ["/recept.svg", "/logo/logo-transparent.svg"];
       images.forEach((src) => {
         const img = new window.Image();
         img.src = src;
@@ -108,7 +108,7 @@ function PayNowContent() {
         </Link>
         
         <div className="text-center space-y-2 flex flex-col items-center">
-          <img src="/logo/logo.webp" alt="SSF Logo" className="h-14 w-auto object-contain mb-1" style={{ mixBlendMode: "multiply", filter: "contrast(1.05)" }} />
+          <img src="/logo/logo-transparent.svg" alt="SSF Logo" className="h-14 w-auto object-contain mb-1" style={{ mixBlendMode: "multiply", filter: "contrast(1.05)" }} />
           <h1 className="text-2xl font-bold tracking-tight text-foreground">
             <span className="font-cooper font-normal">SSF</span> Alparamba Unit
           </h1>
@@ -403,7 +403,7 @@ function PayNowContent() {
             {/* Modal Header */}
             <div className="bg-[#F6F8FC] border-b border-[#E5EAF3] p-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <img src="/logo/logo.webp" alt="SSF Logo" className="h-7 w-auto object-contain" style={{ mixBlendMode: "multiply", filter: "contrast(1.05)" }} />
+                <img src="/logo/logo-transparent.svg" alt="SSF Logo" className="h-7 w-auto object-contain" style={{ mixBlendMode: "multiply", filter: "contrast(1.05)" }} />
                 <span className="text-sm font-semibold text-slate-900">
                   <span className="font-cooper font-normal">SSF</span> Alparamba Unit
                 </span>

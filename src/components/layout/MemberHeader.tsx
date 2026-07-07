@@ -37,7 +37,7 @@ export function MemberHeader() {
       <div className="flex h-16 items-center justify-between px-4 md:px-8 w-full relative">
         {/* Left Side: Brand Logo */}
         <div className="flex items-center gap-2 md:gap-3">
-          <img src="/logo/logo.webp" alt="SSF Logo" className="h-8 md:h-10 w-auto object-contain" style={{ mixBlendMode: "multiply", filter: "contrast(1.05)" }} />
+          <img src="/logo/logo-transparent.svg" alt="SSF Logo" className="h-8 md:h-10 w-auto object-contain" style={{ mixBlendMode: "multiply", filter: "contrast(1.05)" }} />
           <span className="text-sm md:text-lg font-bold text-slate-900 tracking-tight">
             <span className="font-cooper font-normal text-base md:text-[22px] mr-1">SSF</span>
             <span className="hidden sm:inline">Alparamba Unit</span>

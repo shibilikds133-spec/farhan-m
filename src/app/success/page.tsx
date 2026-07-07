@@ -64,7 +64,7 @@ function SuccessPageContent() {
           
           <div className="flex flex-col items-center justify-center gap-2 mt-4 sm:mt-2 animate-in slide-in-from-top-4 fade-in duration-500">
             <Image 
-              src="/logo/logo-transparent.webp" 
+              src="/logo/logo-transparent.svg" 
               alt="SSF Logo" 
               width={64} 
               height={64} 

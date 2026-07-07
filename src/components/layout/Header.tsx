@@ -48,7 +48,7 @@ export function Header() {
       <div className="container flex items-center justify-between px-4 md:px-8">
         <div className="flex items-center gap-2 md:gap-3 font-semibold">
           <TransparentLogo 
-            src="/logo/logo.webp" 
+            src="/logo/logo-transparent.svg" 
             alt="SSF Logo" 
             className={`w-auto object-contain drop-shadow-sm transition-all duration-300 ${isScrolled ? "h-8 md:h-10" : "h-10 md:h-14"}`} 
           />
