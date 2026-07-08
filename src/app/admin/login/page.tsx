@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
+import { TransparentLogo } from "@/components/TransparentLogo";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -58,18 +59,17 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <Card className="w-full max-w-md shadow-xl border-slate-200">
+    <div className="min-h-screen flex flex-col justify-center items-center p-4 relative overflow-hidden bg-[radial-gradient(circle_at_18%_18%,rgba(59,130,246,0.24),transparent_24rem),radial-gradient(circle_at_86%_24%,rgba(34,197,94,0.24),transparent_20rem),linear-gradient(135deg,#f8fbff_0%,#eef8ff_48%,#effdf7_100%)]">
+      
+      {/* Decorative background gradients from landing page */}
+      <div className="pointer-events-none absolute inset-0 opacity-70 [background-image:radial-gradient(circle_at_1px_1px,rgba(37,99,235,0.16)_1px,transparent_0)] [background-size:34px_34px]" />
+      <div className="pointer-events-none absolute -bottom-32 -left-24 h-80 w-[72rem] rotate-[-7deg] rounded-[100%] bg-gradient-to-r from-blue-500/30 via-cyan-300/28 to-emerald-300/30 blur-2xl" />
+      <div className="pointer-events-none absolute -top-24 left-1/3 h-52 w-[58rem] rotate-[15deg] rounded-[100%] bg-white/40 blur-xl" />
+
+      <Card className="w-full max-w-[440px] shadow-xl border-0 bg-white/90 backdrop-blur-xl rounded-[2.5rem] p-2 relative z-10">
         <CardHeader className="text-center space-y-2 pb-6">
-          <div className="flex justify-center mb-4">
-            <div className="relative w-20 h-20">
-              <Image 
-                src="/logo/logo.webp" 
-                alt="SSF Logo" 
-                fill 
-                className="object-contain mix-blend-multiply"
-              />
-            </div>
+          <div className="flex flex-col items-center mb-2">
+            <TransparentLogo src="/logo/logo-transparent.svg" alt="SSF Logo" className="h-16 w-auto object-contain mb-3 drop-shadow-sm" />
           </div>
           <CardTitle className="text-3xl font-bold">
             <span className="font-cooper text-slate-900">SSF</span> Admin
