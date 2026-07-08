@@ -71,6 +71,7 @@ export function MemberDetailTabs({ member }: MemberDetailTabsProps) {
                   <div className="font-medium text-slate-900 dark:text-slate-100">
                     {member.lastPaidAt ? new Date(member.lastPaidAt).toLocaleDateString() : 'Never'}
                   </div>
+                </div>
              </div>
 
              {/* Active Special Events */}
