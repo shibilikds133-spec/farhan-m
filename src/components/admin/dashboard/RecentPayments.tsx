@@ -26,7 +26,7 @@ export function RecentPayments({ payments }: RecentPaymentsProps) {
       <CardContent>
         <div className="space-y-4">
           {payments.slice(0, 5).map((payment) => (
-            <div key={payment.id} className="flex items-center justify-between p-4 rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-slate-50 transition-colors dark:border-slate-700 dark:bg-slate-900/50 dark:hover:bg-slate-900">
+            <div key={payment.id} className="flex items-center justify-between p-4 rounded-xl border border-slate-100 bg-slate-50/50 hover:bg-slate-50 transition-colors dark:border-slate-700 dark:bg-slate-800/40 dark:hover:bg-slate-700/40">
               <div className="flex items-center gap-4">
                 <div className="hidden sm:flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 shadow-sm text-slate-600 font-medium dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:shadow-none">
                   {payment.payerName?.charAt(0) || "?"}

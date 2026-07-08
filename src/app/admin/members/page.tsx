@@ -1,0 +1,95 @@
+"use client";
+
+import React, { useState } from "react";
+import { UserPlus } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { AdminMemberFilters } from "@/components/admin/members/AdminMemberFilters";
+import { AdminMemberRow } from "@/components/admin/members/AdminMemberRow";
+import { AdminMemberCard } from "@/components/admin/members/AdminMemberCard";
+import { MOCK_MEMBERS } from "@/lib/admin/mock-data";
+import Link from "next/link";
+
+export default function AdminMembersPage() {
+  const [members] = useState(MOCK_MEMBERS);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [bloodGroupFilter, setBloodGroupFilter] = useState("all");
+
+  const filteredMembers = members.filter((member) => {
+    // Search query filter
+    const searchLower = searchQuery.toLowerCase();
+    const matchesSearch = !searchQuery || 
+      member.name.toLowerCase().includes(searchLower) ||
+      member.phone.includes(searchQuery) ||
+      member.memberId.toLowerCase().includes(searchLower);
+
+    // Status filter
+    const matchesStatus = statusFilter === "all" || member.status === statusFilter;
+
+    // Blood Group filter
+    const matchesBloodGroup = bloodGroupFilter === "all" || member.bloodGroup === bloodGroupFilter;
+
+    return matchesSearch && matchesStatus && matchesBloodGroup;
+  });
+
+  return (
+    <div className="space-y-6 animate-in fade-in duration-300 pb-10">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 className="text-2xl font-bold text-slate-900 tracking-tight dark:text-slate-50">Members</h2>
+          <p className="text-slate-500 mt-1 dark:text-slate-400">Manage directory, profiles, and dues.</p>
+        </div>
+        
+        <div className="flex items-center gap-3">
+          <Link href="/admin/members/new" className="w-full sm:w-auto">
+            <Button className="h-10 bg-blue-600 hover:bg-blue-700 text-white font-medium w-full">
+              <UserPlus className="w-4 h-4 mr-2" />
+              Add Member
+            </Button>
+          </Link>
+        </div>
+      </div>
+
+      <div className="bg-white dark:bg-slate-900/50 p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <AdminMemberFilters 
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          statusFilter={statusFilter}
+          setStatusFilter={setStatusFilter}
+          bloodGroupFilter={bloodGroupFilter}
+          setBloodGroupFilter={setBloodGroupFilter}
+        />
+      </div>
+
+      <div className="mt-4">
+        {/* Desktop Table View */}
+        <div className="hidden sm:block bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+          <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-800">
+            <thead className="bg-slate-50 dark:bg-slate-800/50">
+              <tr>
+                <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider sm:pl-6">Member</th>
+                <th scope="col" className="px-3 py-3.5 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Contact</th>
+                <th scope="col" className="px-3 py-3.5 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Blood</th>
+                <th scope="col" className="px-3 py-3.5 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Dues</th>
+                <th scope="col" className="px-3 py-3.5 text-left text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Status</th>
+                <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6"><span className="sr-only">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-200 dark:divide-slate-800 bg-white dark:bg-slate-900">
+              {filteredMembers.map((member) => (
+                <AdminMemberRow key={member.id} member={member} />
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Mobile Card View */}
+        <div className="sm:hidden space-y-3">
+          {filteredMembers.map((member) => (
+            <AdminMemberCard key={member.id} member={member} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}

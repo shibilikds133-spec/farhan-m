@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { X, Save, AlertCircle } from "lucide-react";
 import { MemberProfileData } from "./MemberProfileDetails";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 interface EditProfileDrawerProps {
   isOpen: boolean;
@@ -23,11 +24,22 @@ export function EditProfileDrawer({ isOpen, onClose, member, onSave }: EditProfi
 
   if (!isOpen) return null;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     
     // Clear specific error when user starts typing
+    if (errors[name]) {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
+  };
+
+  const handleSelectChange = (name: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) {
       setErrors((prev) => {
         const newErrors = { ...prev };
@@ -122,23 +134,23 @@ export function EditProfileDrawer({ isOpen, onClose, member, onSave }: EditProfi
               </div>
 
               {/* Blood Group */}
-              <div className="space-y-1.5">
+              <div className="space-y-2">
                 <label className="text-sm font-semibold text-slate-900 dark:text-slate-100">Blood Group</label>
-                <select 
-                  name="bloodGroup"
-                  value={formData.bloodGroup}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-50 dark:focus:ring-blue-500/20"
-                >
-                  <option value="A+ve">A+ve</option>
-                  <option value="A-ve">A-ve</option>
-                  <option value="B+ve">B+ve</option>
-                  <option value="B-ve">B-ve</option>
-                  <option value="O+ve">O+ve</option>
-                  <option value="O-ve">O-ve</option>
-                  <option value="AB+ve">AB+ve</option>
-                  <option value="AB-ve">AB-ve</option>
-                </select>
+                <Select value={formData.bloodGroup} onValueChange={(val) => handleSelectChange("bloodGroup", val)}>
+                  <SelectTrigger className="w-full bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800">
+                    <SelectValue placeholder="Select Blood Group" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="A+ve">A+</SelectItem>
+                    <SelectItem value="O+ve">O+</SelectItem>
+                    <SelectItem value="B+ve">B+</SelectItem>
+                    <SelectItem value="AB+ve">AB+</SelectItem>
+                    <SelectItem value="A-ve">A-</SelectItem>
+                    <SelectItem value="O-ve">O-</SelectItem>
+                    <SelectItem value="B-ve">B-</SelectItem>
+                    <SelectItem value="AB-ve">AB-</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               {/* Phone */}

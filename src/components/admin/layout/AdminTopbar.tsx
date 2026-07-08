@@ -1,9 +1,13 @@
 "use client";
 
-import React from "react";
-import { Bell, Menu, Moon, Search, Sun } from "lucide-react";
+import React, { useState } from "react";
+import { Menu, Moon, Search, Sun } from "lucide-react";
 import { AdminActionIcon } from "./AdminActionIcon";
 import { useTheme } from "next-themes";
+import { AdminBreadcrumbs } from "./AdminBreadcrumbs";
+import { AdminSearchModal } from "./AdminSearchModal";
+import { AdminNotificationMenu } from "./AdminNotificationMenu";
+import { AdminProfileMenu } from "./AdminProfileMenu";
 
 interface AdminTopbarProps {
   onOpenMobileMenu: () => void;
@@ -12,47 +16,65 @@ interface AdminTopbarProps {
 
 export function AdminTopbar({ onOpenMobileMenu, title = "Admin Panel" }: AdminTopbarProps) {
   const { resolvedTheme, setTheme } = useTheme();
+  const [isThemeMounted, setIsThemeMounted] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  React.useEffect(() => {
+    setIsThemeMounted(true);
+  }, []);
+
   const isDark = resolvedTheme === "dark";
 
   return (
-    <header className="sticky top-0 z-10 flex h-16 items-center justify-between bg-[#F6F8FC] px-4 lg:px-8 border-b border-[#E5EAF3] transition-colors duration-300 dark:border-slate-700 dark:bg-slate-900">
-      <div className="flex items-center gap-4">
-        <button 
-          onClick={onOpenMobileMenu}
-          className="lg:hidden p-2 -ml-2 text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
-        >
-          <Menu className="w-6 h-6" />
-        </button>
-        <h1 className="text-lg font-semibold text-slate-900 dark:text-slate-50">{title}</h1>
-      </div>
-
-      <div className="flex items-center gap-3">
-        <AdminActionIcon aria-label="Search" className="hidden lg:flex">
-          <Search className="w-5 h-5" />
-        </AdminActionIcon>
-        
-        <AdminActionIcon aria-label="Notifications">
-          <Bell className="w-5 h-5" />
-        </AdminActionIcon>
-
-        <AdminActionIcon
-          aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-          title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-          onClick={() => setTheme(isDark ? "light" : "dark")}
-        >
-          {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-        </AdminActionIcon>
-
-        <div className="hidden lg:flex items-center gap-3 ml-2 pl-4 border-l border-slate-200 dark:border-slate-700">
-          <div className="text-right">
-            <p className="text-sm font-medium text-slate-900 leading-none dark:text-slate-50">Farhan</p>
-            <p className="text-xs text-slate-500 mt-1 dark:text-slate-400">President</p>
+    <>
+      <header className="sticky top-0 z-30 flex h-16 items-center justify-between bg-[#F6F8FC] px-4 lg:px-8 border-b border-[#E5EAF3] transition-colors duration-300 dark:border-slate-700 dark:bg-slate-900">
+        <div className="flex items-center gap-4">
+          <button 
+            onClick={onOpenMobileMenu}
+            className="lg:hidden p-2 -ml-2 text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
+          >
+            <Menu className="w-6 h-6" />
+          </button>
+          
+          {/* Breadcrumbs for Desktop, Title for Mobile fallback */}
+          <div className="hidden sm:block">
+            <AdminBreadcrumbs />
           </div>
-          <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-semibold border border-blue-200 dark:border-blue-500/30 dark:bg-blue-500/15 dark:text-blue-300">
-            FA
+          <div className="sm:hidden">
+            <h1 className="text-lg font-semibold text-slate-900 dark:text-slate-50">{title}</h1>
           </div>
         </div>
-      </div>
-    </header>
+
+        <div className="flex items-center gap-2 md:gap-3">
+          {/* Search Icon */}
+          <div onClick={() => setIsSearchOpen(true)}>
+            <AdminActionIcon aria-label="Search" className="cursor-pointer">
+              <Search className="w-5 h-5" />
+            </AdminActionIcon>
+          </div>
+          
+          {/* Notifications Menu */}
+          <AdminNotificationMenu />
+
+          {/* Theme Toggle */}
+          <AdminActionIcon
+            aria-label="Toggle theme"
+            title="Toggle theme"
+            onClick={() => setTheme(isDark ? "light" : "dark")}
+            className="hidden sm:flex"
+          >
+            {isThemeMounted && isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+          </AdminActionIcon>
+
+          {/* Profile Menu */}
+          <div className="ml-1 pl-2 md:ml-2 md:pl-4 border-l border-slate-200 dark:border-slate-700">
+            <AdminProfileMenu />
+          </div>
+        </div>
+      </header>
+
+      {/* Search Modal */}
+      <AdminSearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+    </>
   );
 }

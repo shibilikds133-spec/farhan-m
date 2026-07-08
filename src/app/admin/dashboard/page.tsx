@@ -14,6 +14,8 @@ import {
 import { StatsCard } from "@/components/admin/dashboard/StatsCard";
 import { RecentPayments } from "@/components/admin/dashboard/RecentPayments";
 import { AdminActionIcon } from "@/components/admin/layout/AdminActionIcon";
+import { CollectionTrendChart } from "@/components/admin/dashboard/CollectionTrendChart";
+import { PaymentMethodChart } from "@/components/admin/dashboard/PaymentMethodChart";
 import { MOCK_DASHBOARD_STATS, MOCK_PAYMENTS } from "@/lib/admin/mock-data";
 import { Button } from "@/components/ui/button";
 
@@ -86,6 +88,11 @@ export default function AdminDashboardPage() {
         {/* Left Column (Wider on Desktop) */}
         <div className="lg:col-span-2 space-y-6">
           
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <CollectionTrendChart data={stats.collectionTrend} />
+            <PaymentMethodChart data={stats.paymentMethodSplit} />
+          </div>
+
           <RecentPayments payments={MOCK_PAYMENTS} />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

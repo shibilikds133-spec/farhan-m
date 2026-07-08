@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { X, LayoutDashboard, Users, Banknote, Wallet, AlertOctagon, BarChart3, Droplet, History, Settings } from "lucide-react";
+import { useTheme } from "next-themes";
+import { X, LayoutDashboard, Users, Banknote, Wallet, AlertOctagon, BarChart3, Droplet, History, Settings, Moon, Sun } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AdminActionIcon } from "./AdminActionIcon";
 
@@ -26,8 +27,13 @@ const navItems = [
 
 export function AdminMobileDrawer({ isOpen, onClose }: AdminMobileDrawerProps) {
   const pathname = usePathname();
+  const { resolvedTheme, setTheme } = useTheme();
+  const [isThemeMounted, setIsThemeMounted] = useState(false);
+  
+  const isDark = resolvedTheme === "dark";
 
   useEffect(() => {
+    setIsThemeMounted(true);
     if (isOpen) {
       document.body.style.overflow = "hidden";
     } else {
@@ -48,11 +54,14 @@ export function AdminMobileDrawer({ isOpen, onClose }: AdminMobileDrawerProps) {
         aria-hidden="true"
       />
       
-      <div className="relative w-full max-w-xs bg-white h-full flex flex-col shadow-2xl animate-in slide-in-from-left duration-200">
-        <div className="h-16 flex items-center justify-between px-6 border-b border-[#E2E8F0]">
-          <Link href="/admin/dashboard" className="flex flex-col" onClick={onClose}>
-            <span className="font-cooper text-2xl leading-none text-slate-900">SSF</span>
-            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Alparamba Unit</span>
+      <div className="relative w-full max-w-xs bg-white dark:bg-slate-900 h-full flex flex-col shadow-2xl animate-in slide-in-from-left duration-200">
+        <div className="h-16 flex items-center justify-between px-6 border-b border-[#E2E8F0] dark:border-slate-800">
+          <Link href="/admin/dashboard" className="flex items-center gap-3" onClick={onClose}>
+            <img src="/logo/logo-transparent.svg" alt="SSF Logo" className="h-8 w-auto object-contain" />
+            <div className="flex flex-col">
+              <span className="font-cooper text-2xl leading-none text-slate-900 dark:text-slate-50">SSF</span>
+              <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Alparamba Unit</span>
+            </div>
           </Link>
           
           <AdminActionIcon onClick={onClose} aria-label="Close menu" className="h-9 w-9">
@@ -73,8 +82,8 @@ export function AdminMobileDrawer({ isOpen, onClose }: AdminMobileDrawerProps) {
                 className={cn(
                   "flex items-center gap-3 px-3 py-3 rounded-xl text-base font-medium transition-colors",
                   isActive 
-                    ? "bg-slate-50 text-blue-600 border border-slate-200 shadow-sm" 
-                    : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                    ? "bg-slate-50 text-blue-600 border border-slate-200 shadow-sm dark:bg-slate-800 dark:border-slate-700 dark:text-blue-400 dark:shadow-none" 
+                    : "text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100"
                 )}
               >
                 <Icon className="w-5 h-5" />
@@ -84,15 +93,25 @@ export function AdminMobileDrawer({ isOpen, onClose }: AdminMobileDrawerProps) {
           })}
         </div>
 
-        <div className="p-4 border-t border-slate-100 bg-slate-50">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-semibold border border-blue-200">
-              FA
+        <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/40 flex items-center justify-center text-blue-700 dark:text-blue-400 font-semibold border border-blue-200 dark:border-blue-800">
+                FA
+              </div>
+              <div>
+                <p className="text-sm font-medium text-slate-900 dark:text-slate-100 leading-none">Farhan</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">President</p>
+              </div>
             </div>
-            <div>
-              <p className="text-sm font-medium text-slate-900 leading-none">Farhan</p>
-              <p className="text-xs text-slate-500 mt-1">President</p>
-            </div>
+            
+            <button
+              onClick={() => setTheme(isDark ? "light" : "dark")}
+              className="p-2 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 shadow-sm transition-colors hover:bg-slate-50 dark:hover:bg-slate-700"
+              aria-label="Toggle theme"
+            >
+              {isThemeMounted && isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
           </div>
         </div>
       </div>

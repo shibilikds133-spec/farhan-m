@@ -34,9 +34,12 @@ export function AdminSidebar() {
   return (
     <aside className="hidden lg:flex flex-col w-[260px] h-screen fixed left-0 top-0 bg-white border-r border-[#E2E8F0] z-20 transition-colors duration-300 dark:border-slate-700 dark:bg-slate-800">
       <div className="h-16 flex items-center px-6 border-b border-[#E2E8F0] dark:border-slate-700">
-        <Link href="/admin/dashboard" className="flex flex-col">
-          <span className="font-cooper text-2xl leading-none text-slate-900 dark:text-slate-50">SSF</span>
-          <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider dark:text-slate-400">Alparamba Unit</span>
+        <Link href="/admin/dashboard" className="flex items-center gap-3">
+          <img src="/logo/logo-transparent.svg" alt="SSF Logo" className="h-8 w-auto object-contain" />
+          <div className="flex flex-col">
+            <span className="font-cooper text-2xl leading-none text-slate-900 dark:text-slate-50">SSF</span>
+            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider dark:text-slate-400">Alparamba Unit</span>
+          </div>
         </Link>
       </div>
 

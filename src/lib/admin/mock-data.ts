@@ -137,4 +137,36 @@ export const MOCK_DASHBOARD_STATS = {
   defaulters: 23,
   pendingCashHandovers: 5,
   availableDonors: 42,
+  collectionTrend: [
+    { month: "Jan", amount: 8000 },
+    { month: "Feb", amount: 9500 },
+    { month: "Mar", amount: 11000 },
+    { month: "Apr", amount: 10500 },
+    { month: "May", amount: 13000 },
+    { month: "Jun", amount: 12450 },
+  ],
+  paymentMethodSplit: [
+    { method: "UPI", percentage: 55, color: "bg-blue-500" },
+    { method: "Cash", percentage: 30, color: "bg-emerald-500" },
+    { method: "Admin", percentage: 15, color: "bg-amber-500" },
+  ],
 };
+
+export const MOCK_SPECIAL_EVENTS = [
+  {
+    id: "evt_1",
+    name: "Rabeeyul Awwal Special",
+    status: "active",
+    minAmount: 100,
+    month: "Aug 2026",
+    theme: "Amber Theme",
+  },
+  {
+    id: "evt_2",
+    name: "Ramadan Relief Fund",
+    status: "inactive",
+    minAmount: 200,
+    month: "Mar 2026",
+    theme: "",
+  },
+];

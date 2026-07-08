@@ -1,0 +1,171 @@
+"use client";
+
+import React, { useState } from "react";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Search, Droplets, Phone, Edit2, Download } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+
+// Mock Data
+const MOCK_DONORS = [
+  { id: "1", name: "Safwan", phone: "9876543210", bloodGroup: "O+", area: "Alparamba Center", isAvailable: true, lastDonated: "2025-10-15" },
+  { id: "2", name: "Fawas", phone: "8765432109", bloodGroup: "B+", area: "North Zone", isAvailable: false, lastDonated: "2026-06-10" },
+  { id: "3", name: "Shibili N", phone: "7654321098", bloodGroup: "A-", area: "South Zone", isAvailable: true, lastDonated: "2025-01-22" },
+];
+
+const BLOOD_GROUPS = ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"];
+
+export function BloodDonorsManager() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [groupFilter, setGroupFilter] = useState("all");
+  const [availabilityFilter, setAvailabilityFilter] = useState("all");
+
+  const filteredDonors = MOCK_DONORS.filter(donor => {
+    const matchesSearch = donor.name.toLowerCase().includes(searchQuery.toLowerCase()) || donor.phone.includes(searchQuery);
+    const matchesGroup = groupFilter === "all" || donor.bloodGroup === groupFilter;
+    const matchesAvailability = availabilityFilter === "all" || (availabilityFilter === "available" ? donor.isAvailable : !donor.isAvailable);
+    
+    return matchesSearch && matchesGroup && matchesAvailability;
+  });
+
+  return (
+    <div className="space-y-4">
+      {/* Filters */}
+      <div className="flex flex-col sm:flex-row gap-3">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <Input 
+            placeholder="Search donors..." 
+            className="pl-9 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 h-10"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+        <div className="relative min-w-[140px]">
+          <Select value={groupFilter} onValueChange={setGroupFilter}>
+            <SelectTrigger className="w-full bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
+              <SelectValue placeholder="All Groups" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Groups</SelectItem>
+              {BLOOD_GROUPS.map(group => (
+                <SelectItem key={group} value={group}>{group}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="relative min-w-[160px]">
+          <Select value={availabilityFilter} onValueChange={setAvailabilityFilter}>
+            <SelectTrigger className="w-full bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
+              <SelectValue placeholder="Availability" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Donors</SelectItem>
+              <SelectItem value="available">Available Now</SelectItem>
+              <SelectItem value="unavailable">Not Available</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <Button variant="outline" className="hidden sm:flex bg-white dark:bg-slate-800 shrink-0">
+          <Download className="w-4 h-4 mr-2" /> Export CSV
+        </Button>
+      </div>
+
+      {/* Desktop Table */}
+      <div className="hidden md:block bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm text-left">
+            <thead className="bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 font-medium border-b border-slate-200 dark:border-slate-800">
+              <tr>
+                <th className="px-4 py-3">Member</th>
+                <th className="px-4 py-3">Contact</th>
+                <th className="px-4 py-3">Blood Group</th>
+                <th className="px-4 py-3">Last Donated</th>
+                <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+              {filteredDonors.map((donor) => (
+                <tr key={donor.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+                  <td className="px-4 py-3">
+                    <div className="font-semibold text-slate-900 dark:text-slate-100">{donor.name}</div>
+                    <div className="text-xs text-slate-500">{donor.area}</div>
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center text-slate-600 dark:text-slate-400">
+                      <Phone className="w-3 h-3 mr-1.5" /> {donor.phone}
+                    </div>
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400 font-bold border border-red-100 dark:border-red-900/30">
+                      {donor.bloodGroup}
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 text-slate-600 dark:text-slate-400">
+                    {donor.lastDonated || "Never"}
+                  </td>
+                  <td className="px-4 py-3">
+                    {donor.isAvailable ? (
+                      <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800 shadow-none">Available</Badge>
+                    ) : (
+                      <Badge variant="secondary" className="bg-slate-100 text-slate-500 dark:bg-slate-800 shadow-none">Unavailable</Badge>
+                    )}
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <Button variant="ghost" size="sm" className="text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20">
+                      <Edit2 className="w-4 h-4 mr-1.5" /> Toggle
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {filteredDonors.length === 0 && (
+            <div className="p-8 text-center text-slate-500">No blood donors found for this criteria.</div>
+          )}
+        </div>
+      </div>
+
+      {/* Mobile Cards */}
+      <div className="md:hidden space-y-3">
+        {filteredDonors.map((donor) => (
+          <Card key={donor.id} className="p-4 border-slate-200 dark:border-slate-800 shadow-sm">
+            <div className="flex justify-between items-start mb-3">
+              <div>
+                <h3 className="font-bold text-slate-900 dark:text-slate-100">{donor.name}</h3>
+                <div className="flex items-center text-xs text-slate-500 mt-0.5">
+                  <Phone className="w-3 h-3 mr-1" /> {donor.phone}
+                </div>
+              </div>
+              <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400 font-bold text-lg border border-red-100 dark:border-red-900/30">
+                {donor.bloodGroup}
+              </div>
+            </div>
+            
+            <div className="flex justify-between items-center bg-slate-50 dark:bg-slate-800/50 p-2 rounded mb-3">
+              <div className="text-xs text-slate-500">
+                Last donated: {donor.lastDonated || "Never"}
+              </div>
+              {donor.isAvailable ? (
+                <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800 shadow-none">Available</Badge>
+              ) : (
+                <Badge variant="secondary" className="bg-slate-100 text-slate-500 dark:bg-slate-800 shadow-none">Unavailable</Badge>
+              )}
+            </div>
+
+            <Button variant="outline" className="w-full text-slate-600 hover:text-blue-600 hover:bg-blue-50 dark:text-slate-400 dark:hover:bg-blue-900/20">
+              <Droplets className="w-4 h-4 mr-2" /> Change Status
+            </Button>
+          </Card>
+        ))}
+        {filteredDonors.length === 0 && (
+          <div className="p-8 text-center text-slate-500 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800">No donors found.</div>
+        )}
+      </div>
+
+    </div>
+  );
+}

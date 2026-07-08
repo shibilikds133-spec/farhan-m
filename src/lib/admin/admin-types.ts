@@ -16,7 +16,7 @@ export interface Member {
   occupation?: string;
   familyCount?: number;
   status: MemberStatus;
-  monthlyTier: "base" | "premium" | "custom";
+  monthlyTier: "base" | "premium" | "custom" | "flexible";
   monthlyAmount: number;
   pinStatus: "not_issued" | "issued" | "reset_required";
   joinedAt?: string;
@@ -51,7 +51,7 @@ export interface Payment {
   amount: number;
   status: PaymentStatus;
   months?: string[];
-  tier?: "base" | "premium" | "custom";
+  tier?: "base" | "premium" | "custom" | "flexible";
   eventId?: string;
   eventName?: string;
   collectedByAdminId?: string;
