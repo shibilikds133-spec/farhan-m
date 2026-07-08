@@ -52,14 +52,27 @@ function ReceiptPageContent({ params }: { params: Promise<{ id: string }> }) {
   }, []);
 
   return (
-    <main className="min-h-[100svh] overflow-x-hidden bg-gradient-to-b from-[#E6F0FA] to-[#F6F8FC] px-4 pb-5 pt-4 sm:px-6 sm:py-10 flex flex-col">
-      <div className="mx-auto w-full max-w-[430px] sm:max-w-[620px] flex-1 flex flex-col justify-start sm:justify-center">
+    <main className="min-h-[100svh] overflow-x-hidden relative bg-[#F6F8FC] dark:bg-slate-950 px-4 pb-5 pt-4 sm:px-6 sm:py-10 flex flex-col transition-colors duration-500">
+      
+      {/* Light Mode Original Background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#E6F0FA] to-[#F6F8FC] dark:hidden -z-20" />
+
+      {/* Dark Mode Glowing Orbs (for the blur effect to be visible) */}
+      <div className="absolute inset-0 hidden dark:block -z-20 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vw] max-w-[500px] max-h-[500px] rounded-full bg-blue-600/20 mix-blend-screen blur-[80px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[60vw] h-[60vw] max-w-[500px] max-h-[500px] rounded-full bg-indigo-600/20 mix-blend-screen blur-[80px]" />
+      </div>
+
+      {/* Glassmorphism layer */}
+      <div className="absolute inset-0 hidden dark:block backdrop-blur-3xl bg-slate-950/60 -z-10 transition-colors duration-500" />
+      
+      <div className="mx-auto w-full max-w-[430px] sm:max-w-[620px] flex-1 flex flex-col justify-start sm:justify-center z-10">
         
         {/* Branding Header with Floating Back Button */}
         <div className="relative mb-4 sm:mb-8 flex flex-col items-center justify-center">
           <Link
             href={source === "member" ? "/member/dashboard" : "/"}
-            className="absolute left-0 top-2 p-2.5 sm:p-3 text-slate-500 hover:text-slate-900 hover:bg-white/60 rounded-full transition-colors print:hidden shadow-sm backdrop-blur-sm border border-slate-200/50"
+            className="absolute left-0 top-2 p-2.5 sm:p-3 text-slate-500 hover:text-slate-900 hover:bg-white/80 dark:hover:bg-slate-800/80 dark:text-slate-400 dark:hover:text-slate-100 rounded-full transition-colors print:hidden shadow-sm backdrop-blur-md border border-slate-200/50 dark:border-slate-700/50 bg-white/40 dark:bg-slate-900/40"
             title="Go Back"
           >
             <ArrowLeft className="size-5" />
@@ -71,10 +84,10 @@ function ReceiptPageContent({ params }: { params: Promise<{ id: string }> }) {
               alt="SSF Logo" 
               width={64} 
               height={64} 
-              className="object-contain w-16 h-16 md:w-[88px] md:h-[88px] mix-blend-multiply"
+              className="object-contain w-16 h-16 md:w-[88px] md:h-[88px]"
               priority
             />
-            <h1 className="text-xl md:text-3xl font-cooper text-[#063b78] tracking-tight text-center mt-1">
+            <h1 className="text-xl md:text-3xl font-cooper text-[#063b78] dark:text-slate-50 tracking-tight text-center mt-1 transition-colors duration-500">
               SSF Alparamba Unit
             </h1>
           </div>

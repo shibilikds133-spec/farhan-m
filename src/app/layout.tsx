@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { Inter, Noto_Sans_Malayalam, Quicksand } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -41,9 +42,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${notoMalayalam.variable} ${cooper.variable} ${quicksand.variable} antialiased`} suppressHydrationWarning>
-        {children}
-        <Toaster position="bottom-right" richColors />
+      <body className={`${inter.variable} ${notoMalayalam.variable} ${cooper.variable} ${quicksand.variable} antialiased transition-colors duration-300`} suppressHydrationWarning>
+        <ThemeProvider>
+          {children}
+          <Toaster position="bottom-right" richColors />
+        </ThemeProvider>
       </body>
     </html>
   );

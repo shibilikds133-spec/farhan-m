@@ -16,7 +16,7 @@ interface TransactionCardProps {
 
 export function TransactionCard({ transaction }: TransactionCardProps) {
   return (
-    <div className="bg-white rounded-2xl border border-[#E5EAF3] p-4 flex items-center justify-between shadow-sm hover:shadow-md transition-shadow">
+    <div className="bg-white rounded-2xl border border-[#E5EAF3] p-4 flex items-center justify-between shadow-sm transition-all hover:shadow-md dark:border-slate-700 dark:bg-slate-800 dark:shadow-none dark:hover:bg-slate-700/70">
       <div className="flex items-center gap-4">
         {/* Icon based on method */}
         <div className={`size-11 rounded-full border shadow-[0_4px_12px_rgba(15,23,42,0.06)] flex items-center justify-center shrink-0 transition-all hover:-translate-y-0.5 ${
@@ -27,8 +27,8 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
         
         {/* Details */}
         <div className="flex flex-col">
-          <span className="font-bold text-slate-900 text-lg">₹{transaction.amount}</span>
-          <span className="text-xs text-slate-500 font-medium">
+          <span className="font-bold text-slate-900 text-lg dark:text-slate-50">₹{transaction.amount}</span>
+          <span className="text-xs text-slate-500 font-medium dark:text-slate-400">
             {transaction.date} • {transaction.method === "UPI" ? "Online Transfer" : "Handover"}
           </span>
           {/* Status Badge (if not completed) */}
@@ -46,7 +46,7 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
       {transaction.status === "COMPLETED" && transaction.receiptUrl && (
         <Link 
           href={transaction.receiptUrl}
-          className="size-11 rounded-full bg-blue-50 border border-blue-100 shadow-[0_4px_12px_rgba(15,23,42,0.08)] text-blue-600 flex items-center justify-center transition-all hover:-translate-y-0.5 hover:bg-blue-100 shrink-0 ml-2"
+          className="size-11 rounded-full bg-blue-50 border border-blue-100 shadow-[0_4px_12px_rgba(15,23,42,0.08)] text-blue-600 flex items-center justify-center transition-all hover:-translate-y-0.5 hover:bg-blue-100 shrink-0 ml-2 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-300 dark:shadow-none dark:hover:bg-blue-500/15"
           title="View Receipt"
         >
           <FileText className="size-5" />

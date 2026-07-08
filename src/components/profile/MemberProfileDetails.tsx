@@ -21,10 +21,10 @@ interface MemberProfileDetailsProps {
 
 export function MemberProfileDetails({ member }: MemberProfileDetailsProps) {
   return (
-    <div className="bg-white rounded-3xl border border-[#E5EAF3] shadow-sm overflow-hidden mb-6">
+    <div className="bg-white rounded-3xl border border-[#E5EAF3] shadow-sm overflow-hidden mb-6 transition-colors duration-300 dark:border-slate-700 dark:bg-slate-800 dark:shadow-none">
       
       {/* Header section with Avatar */}
-      <div className="bg-gradient-to-r from-blue-50 to-slate-50 p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 border-b border-[#E5EAF3]">
+      <div className="bg-gradient-to-r from-blue-50 to-slate-50 p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 border-b border-[#E5EAF3] dark:border-slate-700 dark:from-blue-500/10 dark:to-slate-900">
         <div className="relative">
           <div className="size-24 md:size-28 bg-blue-600 text-white flex items-center justify-center rounded-full text-3xl font-bold shadow-md border-4 border-white">
             {member.initials}
@@ -35,9 +35,9 @@ export function MemberProfileDetails({ member }: MemberProfileDetailsProps) {
         </div>
         
         <div className="flex flex-col items-center md:items-start text-center md:text-left">
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900">{member.name}</h2>
-          <p className="text-slate-500 font-medium mt-1 flex items-center gap-1.5">
-            <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-md text-xs font-bold uppercase tracking-wide">
+          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-slate-50">{member.name}</h2>
+          <p className="text-slate-500 font-medium mt-1 flex items-center gap-1.5 dark:text-slate-400">
+            <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded-md text-xs font-bold uppercase tracking-wide dark:bg-blue-500/10 dark:text-blue-300">
               ID: {member.id}
             </span>
             • {member.unit} Unit
@@ -47,7 +47,7 @@ export function MemberProfileDetails({ member }: MemberProfileDetailsProps) {
 
       {/* Details Grid */}
       <div className="p-6 md:p-8">
-        <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4 flex items-center gap-2">
+        <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4 flex items-center gap-2 dark:text-slate-50">
           <User className="size-4 text-blue-600" />
           Personal Information
         </h3>
@@ -58,9 +58,9 @@ export function MemberProfileDetails({ member }: MemberProfileDetailsProps) {
           <DetailItem colorScheme="emerald" icon={<MapPin className="size-5" />} label="Address" value={member.address} />
         </div>
 
-        <div className="h-px bg-[#E5EAF3] w-full mb-8" />
+        <div className="h-px bg-[#E5EAF3] w-full mb-8 dark:bg-slate-700" />
 
-        <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4 flex items-center gap-2">
+        <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4 flex items-center gap-2 dark:text-slate-50">
           <Phone className="size-4 text-blue-600" />
           Contact Details
         </h3>
@@ -69,9 +69,9 @@ export function MemberProfileDetails({ member }: MemberProfileDetailsProps) {
           <DetailItem colorScheme="whatsapp" icon={<MessageCircle className="size-5" />} label="WhatsApp" value={member.whatsapp} />
         </div>
 
-        <div className="h-px bg-[#E5EAF3] w-full mb-8" />
+        <div className="h-px bg-[#E5EAF3] w-full mb-8 dark:bg-slate-700" />
 
-        <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4 flex items-center gap-2">
+        <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4 flex items-center gap-2 dark:text-slate-50">
           <ShieldCheck className="size-4 text-blue-600" />
           Organization
         </h3>
@@ -108,8 +108,8 @@ function DetailItem({ icon, label, value, colorScheme = "slate" }: { icon: React
         {icon}
       </div>
       <div className="flex flex-col">
-        <span className="text-xs text-slate-500 font-medium mb-0.5">{label}</span>
-        <span className="text-sm font-semibold text-slate-900">{value}</span>
+        <span className="text-xs text-slate-500 font-medium mb-0.5 dark:text-slate-400">{label}</span>
+        <span className="text-sm font-semibold text-slate-900 dark:text-slate-50">{value}</span>
       </div>
     </div>
   );

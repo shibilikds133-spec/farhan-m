@@ -74,17 +74,17 @@ export function EditProfileDrawer({ isOpen, onClose, member, onSave }: EditProfi
       
       {/* Drawer Content */}
       <div 
-        className="relative bg-white w-full md:w-full md:max-w-2xl h-[90vh] md:h-auto md:max-h-[85vh] rounded-t-3xl md:rounded-3xl shadow-xl flex flex-col animate-in slide-in-from-bottom-full md:slide-in-from-bottom-0 md:zoom-in-95 duration-300"
+        className="relative bg-white w-full md:w-full md:max-w-2xl h-[90vh] md:h-auto md:max-h-[85vh] rounded-t-3xl md:rounded-3xl shadow-xl flex flex-col animate-in slide-in-from-bottom-full md:slide-in-from-bottom-0 md:zoom-in-95 duration-300 dark:border dark:border-slate-700 dark:bg-slate-800"
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 md:p-6 border-b border-slate-100 shrink-0">
+        <div className="flex items-center justify-between p-4 md:p-6 border-b border-slate-100 shrink-0 dark:border-slate-700">
           <div>
-            <h2 className="text-lg font-bold text-slate-900">Edit Profile</h2>
-            <p className="text-xs text-slate-500">Update your personal information</p>
+            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-50">Edit Profile</h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Update your personal information</p>
           </div>
           <button 
             onClick={onClose}
-            className="size-11 rounded-full bg-[#F8FAFC] border border-[#E2E8F0] shadow-[0_4px_12px_rgba(15,23,42,0.08)] text-slate-500 flex items-center justify-center transition-all hover:scale-105 hover:bg-white hover:text-slate-900 shrink-0"
+            className="size-11 rounded-full bg-[#F8FAFC] border border-[#E2E8F0] shadow-[0_4px_12px_rgba(15,23,42,0.08)] text-slate-500 flex items-center justify-center transition-all hover:scale-105 hover:bg-white hover:text-slate-900 shrink-0 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:shadow-none dark:hover:bg-slate-700 dark:hover:text-white"
           >
             <X className="size-5" />
           </button>
@@ -97,38 +97,38 @@ export function EditProfileDrawer({ isOpen, onClose, member, onSave }: EditProfi
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Name */}
               <div className="col-span-1 md:col-span-2 space-y-1.5">
-                <label className="text-sm font-semibold text-slate-900">Full Name</label>
+                <label className="text-sm font-semibold text-slate-900 dark:text-slate-100">Full Name</label>
                 <input 
                   type="text" 
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2.5 rounded-xl border bg-white focus:outline-none focus:ring-2 focus:ring-blue-100 ${errors.name ? 'border-red-300 focus:border-red-500' : 'border-slate-200 focus:border-blue-500'}`}
+                  className={`w-full px-4 py-2.5 rounded-xl border bg-white focus:outline-none focus:ring-2 focus:ring-blue-100 dark:bg-slate-900 dark:text-slate-50 dark:focus:ring-blue-500/20 ${errors.name ? 'border-red-300 focus:border-red-500 dark:border-red-500/60' : 'border-slate-200 focus:border-blue-500 dark:border-slate-700'}`}
                 />
                 {errors.name && <p className="text-xs text-red-500 flex items-center gap-1"><AlertCircle className="size-3" /> {errors.name}</p>}
               </div>
 
               {/* Age */}
               <div className="space-y-1.5">
-                <label className="text-sm font-semibold text-slate-900">Age</label>
+                <label className="text-sm font-semibold text-slate-900 dark:text-slate-100">Age</label>
                 <input 
                   type="number" 
                   name="age"
                   value={formData.age}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2.5 rounded-xl border bg-white focus:outline-none focus:ring-2 focus:ring-blue-100 ${errors.age ? 'border-red-300 focus:border-red-500' : 'border-slate-200 focus:border-blue-500'}`}
+                  className={`w-full px-4 py-2.5 rounded-xl border bg-white focus:outline-none focus:ring-2 focus:ring-blue-100 dark:bg-slate-900 dark:text-slate-50 dark:focus:ring-blue-500/20 ${errors.age ? 'border-red-300 focus:border-red-500 dark:border-red-500/60' : 'border-slate-200 focus:border-blue-500 dark:border-slate-700'}`}
                 />
                 {errors.age && <p className="text-xs text-red-500 flex items-center gap-1"><AlertCircle className="size-3" /> {errors.age}</p>}
               </div>
 
               {/* Blood Group */}
               <div className="space-y-1.5">
-                <label className="text-sm font-semibold text-slate-900">Blood Group</label>
+                <label className="text-sm font-semibold text-slate-900 dark:text-slate-100">Blood Group</label>
                 <select 
                   name="bloodGroup"
                   value={formData.bloodGroup}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-50 dark:focus:ring-blue-500/20"
                 >
                   <option value="A+ve">A+ve</option>
                   <option value="A-ve">A-ve</option>
@@ -143,51 +143,51 @@ export function EditProfileDrawer({ isOpen, onClose, member, onSave }: EditProfi
 
               {/* Phone */}
               <div className="space-y-1.5">
-                <label className="text-sm font-semibold text-slate-900">Phone Number</label>
+                <label className="text-sm font-semibold text-slate-900 dark:text-slate-100">Phone Number</label>
                 <input 
                   type="text" 
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2.5 rounded-xl border bg-white focus:outline-none focus:ring-2 focus:ring-blue-100 ${errors.phone ? 'border-red-300 focus:border-red-500' : 'border-slate-200 focus:border-blue-500'}`}
+                  className={`w-full px-4 py-2.5 rounded-xl border bg-white focus:outline-none focus:ring-2 focus:ring-blue-100 dark:bg-slate-900 dark:text-slate-50 dark:focus:ring-blue-500/20 ${errors.phone ? 'border-red-300 focus:border-red-500 dark:border-red-500/60' : 'border-slate-200 focus:border-blue-500 dark:border-slate-700'}`}
                 />
                 {errors.phone && <p className="text-xs text-red-500 flex items-center gap-1"><AlertCircle className="size-3" /> {errors.phone}</p>}
               </div>
 
               {/* WhatsApp */}
               <div className="space-y-1.5">
-                <label className="text-sm font-semibold text-slate-900">WhatsApp Number</label>
+                <label className="text-sm font-semibold text-slate-900 dark:text-slate-100">WhatsApp Number</label>
                 <input 
                   type="text" 
                   name="whatsapp"
                   value={formData.whatsapp}
                   onChange={handleChange}
-                  className={`w-full px-4 py-2.5 rounded-xl border bg-white focus:outline-none focus:ring-2 focus:ring-blue-100 ${errors.whatsapp ? 'border-red-300 focus:border-red-500' : 'border-slate-200 focus:border-blue-500'}`}
+                  className={`w-full px-4 py-2.5 rounded-xl border bg-white focus:outline-none focus:ring-2 focus:ring-blue-100 dark:bg-slate-900 dark:text-slate-50 dark:focus:ring-blue-500/20 ${errors.whatsapp ? 'border-red-300 focus:border-red-500 dark:border-red-500/60' : 'border-slate-200 focus:border-blue-500 dark:border-slate-700'}`}
                 />
                 {errors.whatsapp && <p className="text-xs text-red-500 flex items-center gap-1"><AlertCircle className="size-3" /> {errors.whatsapp}</p>}
               </div>
 
               {/* Occupation */}
               <div className="col-span-1 md:col-span-2 space-y-1.5">
-                <label className="text-sm font-semibold text-slate-900">Occupation</label>
+                <label className="text-sm font-semibold text-slate-900 dark:text-slate-100">Occupation</label>
                 <input 
                   type="text" 
                   name="occupation"
                   value={formData.occupation}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-50 dark:focus:ring-blue-500/20"
                 />
               </div>
 
               {/* Address */}
               <div className="col-span-1 md:col-span-2 space-y-1.5">
-                <label className="text-sm font-semibold text-slate-900">Address / House Name</label>
+                <label className="text-sm font-semibold text-slate-900 dark:text-slate-100">Address / House Name</label>
                 <textarea 
                   name="address"
                   rows={3}
                   value={formData.address}
                   onChange={(e: any) => handleChange(e)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 resize-none"
+                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 resize-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-50 dark:focus:ring-blue-500/20"
                 />
               </div>
 
@@ -223,7 +223,7 @@ export function EditProfileDrawer({ isOpen, onClose, member, onSave }: EditProfi
         </div>
 
         {/* Footer Actions */}
-        <div className="p-4 md:p-6 border-t border-slate-100 shrink-0 bg-white md:rounded-b-3xl">
+        <div className="p-4 md:p-6 border-t border-slate-100 shrink-0 bg-white md:rounded-b-3xl dark:border-slate-700 dark:bg-slate-800">
           <button 
             form="edit-profile-form"
             type="submit"
