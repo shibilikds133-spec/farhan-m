@@ -47,8 +47,10 @@ export function CollectionTrendChart({ data }: CollectionTrendChartProps) {
   const areaPath = `${path} L ${width} ${height} L 0 ${height} Z`;
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-4 sm:p-6 shadow-sm transition-colors duration-300 dark:border-slate-700 dark:bg-slate-800 dark:shadow-none h-full flex flex-col">
-      <div className="flex items-center justify-between mb-2">
+    <div className="bg-white rounded-xl border border-slate-200 shadow-sm transition-colors duration-300 dark:border-slate-700 dark:bg-slate-800 dark:shadow-none h-full flex flex-col overflow-hidden">
+      
+      {/* Header (with padding) */}
+      <div className="flex items-center justify-between p-4 sm:p-6 pb-0 sm:pb-0 z-10">
         <div>
           <h3 className="text-base font-semibold text-slate-900 dark:text-slate-50">Collection Trend</h3>
           <p className="text-sm text-slate-500 dark:text-slate-400">Past 6 months</p>
@@ -58,13 +60,13 @@ export function CollectionTrendChart({ data }: CollectionTrendChartProps) {
         </div>
       </div>
       
-      {/* SVG Smooth Area Chart */}
-      <div className="flex-1 relative w-full mt-4 flex flex-col px-2 sm:px-4">
+      {/* SVG Smooth Area Chart (Edge to Edge) */}
+      <div className="flex-1 relative w-full mt-4 flex flex-col">
         <div className="relative w-full flex-1 min-h-[150px]">
-          <svg viewBox="0 -10 1000 320" className="absolute inset-0 w-full h-full overflow-visible" preserveAspectRatio="none">
+          <svg viewBox={`0 -10 ${width} 320`} className="absolute inset-0 w-full h-full overflow-visible" preserveAspectRatio="none">
             <defs>
               <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
+                <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.35} />
                 <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
               </linearGradient>
             </defs>
@@ -111,7 +113,7 @@ export function CollectionTrendChart({ data }: CollectionTrendChartProps) {
               style={{ 
                 left: `${(points[hoveredIndex].x / width) * 100}%`, 
                 top: `${(points[hoveredIndex].y / height) * 100}%`,
-                transform: `translate(${hoveredIndex === 0 ? '0%' : hoveredIndex === points.length - 1 ? '-100%' : '-50%'}, -150%)`
+                transform: `translate(${hoveredIndex === 0 ? '5%' : hoveredIndex === points.length - 1 ? '-105%' : '-50%'}, -150%)`
               }}
             >
               <div className="bg-slate-800 text-white text-xs py-1 px-2 rounded shadow-lg whitespace-nowrap dark:bg-slate-700">
@@ -137,25 +139,26 @@ export function CollectionTrendChart({ data }: CollectionTrendChartProps) {
           </div>
         </div>
 
-        {/* X-Axis Labels */}
-        <div className="relative w-full h-6 mt-4 border-t border-slate-100 dark:border-slate-700/50 pt-3">
-          {data.map((item, index) => {
-            const leftPercent = (index / (data.length - 1)) * 100;
-            // Adjust translation for first and last items so they don't overflow
-            let transform = 'translateX(-50%)';
-            if (index === 0) transform = 'translateX(0%)';
-            if (index === data.length - 1) transform = 'translateX(-100%)';
-            
-            return (
-              <div 
-                key={index} 
-                className="absolute text-[11px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 cursor-default"
-                style={{ left: `${leftPercent}%`, transform }}
-              >
-                {item.month}
-              </div>
-            );
-          })}
+        {/* X-Axis Labels (with padding so they don't stick to walls) */}
+        <div className="relative w-full h-8 mt-2 border-t border-slate-100 dark:border-slate-700/50 pt-2 px-4 sm:px-6 bg-white dark:bg-slate-800 z-10">
+          <div className="relative w-full h-full">
+            {data.map((item, index) => {
+              const leftPercent = (index / (data.length - 1)) * 100;
+              let transform = 'translateX(-50%)';
+              if (index === 0) transform = 'translateX(0%)';
+              if (index === data.length - 1) transform = 'translateX(-100%)';
+              
+              return (
+                <div 
+                  key={index} 
+                  className="absolute text-[11px] sm:text-xs font-medium text-slate-500 dark:text-slate-400 cursor-default"
+                  style={{ left: `${leftPercent}%`, transform }}
+                >
+                  {item.month}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
