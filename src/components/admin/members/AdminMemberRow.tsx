@@ -1,21 +1,25 @@
 "use client";
 
 import React from "react";
-import { MoreHorizontal, Droplet, Clock } from "lucide-react";
+import { ChevronRight, Droplet, Clock } from "lucide-react";
 import { Member } from "@/lib/admin/admin-types";
 import { Badge } from "@/components/ui/badge";
 import { AdminActionIcon } from "@/components/admin/layout/AdminActionIcon";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface AdminMemberRowProps {
   member: Member;
 }
 
 export function AdminMemberRow({ member }: AdminMemberRowProps) {
+  const router = useRouter();
   const isDefaulter = member.status === "inactive" || member.pinStatus === "reset_required";
   
   return (
-    <tr className="border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+    <tr 
+      onClick={() => router.push(`/admin/members/${member.id}`)}
+      className="border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors cursor-pointer"
+    >
       <td className="py-4 pl-4 pr-3 sm:pl-6">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 font-medium">
@@ -60,11 +64,9 @@ export function AdminMemberRow({ member }: AdminMemberRowProps) {
       </td>
       <td className="py-4 pr-4 pl-3 sm:pr-6 text-right">
         <div className="flex justify-end gap-2">
-           <Link href={`/admin/members/${member.id}`}>
-              <AdminActionIcon aria-label="View Details" className="h-8 w-8">
-                <MoreHorizontal className="w-4 h-4" />
-              </AdminActionIcon>
-           </Link>
+           <AdminActionIcon aria-label="View Details" className="h-8 w-8 pointer-events-none">
+             <ChevronRight className="w-4 h-4 text-slate-400" />
+           </AdminActionIcon>
         </div>
       </td>
     </tr>
