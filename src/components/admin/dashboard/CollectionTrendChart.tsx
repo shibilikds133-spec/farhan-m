@@ -59,9 +59,9 @@ export function CollectionTrendChart({ data }: CollectionTrendChartProps) {
       </div>
       
       {/* SVG Smooth Area Chart */}
-      <div className="flex-1 relative w-full mt-4 flex flex-col">
+      <div className="flex-1 relative w-full mt-4 flex flex-col px-2 sm:px-4">
         <div className="relative w-full flex-1 min-h-[150px]">
-          <svg viewBox={`-20 0 ${width + 40} ${height + 10}`} className="absolute inset-0 w-full h-full overflow-visible" preserveAspectRatio="none">
+          <svg viewBox="0 -10 1000 320" className="absolute inset-0 w-full h-full overflow-visible" preserveAspectRatio="none">
             <defs>
               <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
@@ -111,7 +111,7 @@ export function CollectionTrendChart({ data }: CollectionTrendChartProps) {
               style={{ 
                 left: `${(points[hoveredIndex].x / width) * 100}%`, 
                 top: `${(points[hoveredIndex].y / height) * 100}%`,
-                transform: 'translate(-50%, -150%)'
+                transform: `translate(${hoveredIndex === 0 ? '0%' : hoveredIndex === points.length - 1 ? '-100%' : '-50%'}, -150%)`
               }}
             >
               <div className="bg-slate-800 text-white text-xs py-1 px-2 rounded shadow-lg whitespace-nowrap dark:bg-slate-700">
