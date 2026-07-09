@@ -147,10 +147,19 @@ export function ReportsDashboard() {
                </div>
                
                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                 {["O+", "A+", "B+", "AB+", "O-", "A-", "B-", "AB-"].map((group, idx) => (
+                 {([
+                   { group: "O+", count: 8 },
+                   { group: "A+", count: 5 },
+                   { group: "B+", count: 7 },
+                   { group: "AB+", count: 3 },
+                   { group: "O-", count: 4 },
+                   { group: "A-", count: 2 },
+                   { group: "B-", count: 6 },
+                   { group: "AB-", count: 2 },
+                 ] as { group: string; count: number }[]).map(({ group, count }) => (
                    <div key={group} className="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl flex flex-col items-center justify-center border border-slate-100 dark:border-slate-700">
                      <span className="text-lg font-bold text-red-500 dark:text-red-400 mb-2">{group}</span>
-                     <span className="text-2xl font-mono text-slate-900 dark:text-slate-100">{Math.floor(Math.random() * 15) + 2}</span>
+                     <span className="text-2xl font-mono text-slate-900 dark:text-slate-100">{count}</span>
                      <span className="text-xs text-slate-500 mt-1">Available</span>
                    </div>
                  ))}

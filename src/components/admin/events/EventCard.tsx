@@ -2,10 +2,11 @@ import React from "react";
 import { Calendar, Edit, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
+// Matches the shape of MOCK_SPECIAL_EVENTS in lib/admin/mock-data.ts
 interface SpecialEvent {
   id: string;
   name: string;
-  status: string;
+  status: "active" | "inactive";
   minAmount: number;
   month: string;
   theme?: string;
@@ -13,6 +14,8 @@ interface SpecialEvent {
 
 interface EventCardProps {
   event: SpecialEvent;
+  onEdit?: (event: SpecialEvent) => void;
+  onDelete?: (event: SpecialEvent) => void;
 }
 
 export function EventCard({ event }: EventCardProps) {

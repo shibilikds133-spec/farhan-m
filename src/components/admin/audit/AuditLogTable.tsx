@@ -8,6 +8,21 @@ import { Search, ChevronRight, Activity, Edit2, ShieldAlert, PlusCircle, Trash2,
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
+// Local type for Audit Log entries in this component
+interface AuditLogEntry {
+  id: string;
+  time: string;
+  actor: string;
+  action: string;
+  entity: string;
+  target: string;
+  summary: string;
+  severity: "info" | "warning" | "error";
+  ip?: string;
+  device?: string;
+  changes: { field: string; before: string; after: string };
+}
+
 // Mock Data
 const MOCK_AUDIT = [
   { id: "LOG-001", time: "2026-07-08 10:30 AM", actor: "Farhan M", action: "update", entity: "Member", target: "Safwan", summary: "Updated phone number", severity: "info", ip: "192.168.1.42", device: "Chrome / Windows 11", changes: { field: "Phone Number", before: "+919876543210", after: "9876543210" } },
@@ -19,7 +34,7 @@ const MOCK_AUDIT = [
 export function AuditLogTable() {
   const [searchQuery, setSearchQuery] = useState("");
   const [actionFilter, setActionFilter] = useState("all");
-  const [selectedLog, setSelectedLog] = useState<any>(null);
+  const [selectedLog, setSelectedLog] = useState<AuditLogEntry | null>(null);
 
   // Assuming current user is a super admin for this demo
   const isCurrentUserSuperAdmin = true;
