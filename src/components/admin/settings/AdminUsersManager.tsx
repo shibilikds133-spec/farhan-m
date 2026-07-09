@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { ShieldCheck, Edit2, Trash2, Plus, UserCog, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 import { MOCK_ADMIN_USERS } from "@/lib/admin/mock-data";
-import { AdminUser } from "@/lib/admin/admin-types";
+import { AdminUser, AdminRole } from "@/lib/admin/admin-types";
 
 
 

@@ -179,20 +179,23 @@ export default function AdminDashboardPage() {
                 <div className="w-full bg-slate-100 rounded-full h-2 dark:bg-slate-700">
                   <div className="bg-red-500 h-2 rounded-full" style={{ width: '15%' }}></div>
                 </div>
-                <Button variant="outline" className="w-full mt-2 text-sm">
-                  View Follow-up List
-                </Button>
+                <Link href="/admin/defaulters" className="block w-full mt-2">
+                  <Button variant="outline" className="w-full text-sm">
+                    View Follow-up List
+                  </Button>
+                </Link>
              </div>
           </div>
 
           <div>
-            <StatsCard 
-              label="Available Blood Donors" 
-              metric={stats.availableDonors}
-              helper="Ready for emergency"
-              icon={Droplet}
-              variant="destructive"
-            />
+              <StatsCard 
+                label="Available Blood Donors" 
+                metric={stats.availableDonors}
+                helper="Ready for emergency"
+                icon={Droplet}
+                variant="destructive"
+                href="/admin/blood-donors"
+              />
           </div>
         </div>
       </div>

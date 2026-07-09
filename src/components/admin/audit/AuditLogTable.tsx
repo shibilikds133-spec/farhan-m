@@ -103,11 +103,11 @@ export function AuditLogTable() {
               {filteredLogs.map((log) => (
                 <tr 
                   key={log.id} 
-                  onClick={() => setSelectedLog(log)} 
+                  onClick={() => setSelectedLog(log as any)} 
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault();
-                      setSelectedLog(log);
+                      setSelectedLog(log as any);
                     }
                   }}
                   tabIndex={0}
@@ -133,8 +133,8 @@ export function AuditLogTable() {
                     {log.summary}
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <Button variant="ghost" size="icon" aria-label={`View details for ${log.id}`} className="h-8 w-8 text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20" onClick={(e) => { e.stopPropagation(); setSelectedLog(log); }}>
-                      <ChevronRight className="w-4 h-4" />
+                    <Button variant="ghost" size="icon" aria-label={`View details for ${log.id}`} className="h-8 w-8 text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20" onClick={(e) => { e.stopPropagation(); setSelectedLog(log as any); }}>
+                      <Eye className="w-4 h-4" />
                     </Button>
                   </td>
                 </tr>
@@ -152,11 +152,11 @@ export function AuditLogTable() {
         {filteredLogs.map((log) => (
           <Card 
             key={log.id} 
-            onClick={() => setSelectedLog(log)} 
+            onClick={() => setSelectedLog(log as any)} 
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                setSelectedLog(log);
+                setSelectedLog(log as any);
               }
             }}
             tabIndex={0}

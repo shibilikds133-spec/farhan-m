@@ -128,7 +128,7 @@ export function PremiumReceiptCard({
       {/* Receipt Card Wrapper with exact aspect ratio of the SVG (775.5 x 960) */}
       <div
         ref={receiptRef}
-        className="relative w-full max-w-[400px] overflow-hidden shadow-2xl dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-white border border-white/50 transition-shadow duration-500"
+        className="relative w-full max-w-[400px] overflow-hidden shadow-2xl dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] print:shadow-none print:border-none print:max-w-[100mm] bg-white border border-white/50 transition-shadow duration-500"
         style={{ aspectRatio: "775.5 / 960" }}
       >
         {/* Background SVG */}
