@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, ChevronRight, Activity, Edit2, ShieldAlert, PlusCircle, Trash2, X, ArrowRight } from "lucide-react";
+import { Search, ChevronRight, Activity, Edit2, ShieldAlert, PlusCircle, Trash2, X, ArrowRight, Eye } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
