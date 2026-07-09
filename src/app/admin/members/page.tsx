@@ -19,6 +19,7 @@ export default function AdminMembersPage() {
   const [areaFilter, setAreaFilter] = useState("all");
   const [tierFilter, setTierFilter] = useState("all");
   const [arrearsFilter, setArrearsFilter] = useState("all");
+  const [sortOption, setSortOption] = useState("newest");
 
   const filteredMembers = members.filter((member) => {
     // Search query filter
@@ -44,6 +45,17 @@ export default function AdminMembersPage() {
     const matchesArrears = arrearsFilter === "all" || (arrearsFilter === "arrears" ? member.duesPending > 0 : member.duesPending === 0);
 
     return matchesSearch && matchesStatus && matchesBloodGroup && matchesArea && matchesTier && matchesArrears;
+  }).sort((a, b) => {
+    if (sortOption === "newest") {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    } else if (sortOption === "name-asc") {
+      return a.name.localeCompare(b.name);
+    } else if (sortOption === "name-desc") {
+      return b.name.localeCompare(a.name);
+    } else if (sortOption === "dues-desc") {
+      return b.duesPending - a.duesPending;
+    }
+    return 0;
   });
 
   return (
@@ -78,6 +90,8 @@ export default function AdminMembersPage() {
           setTierFilter={setTierFilter}
           arrearsFilter={arrearsFilter}
           setArrearsFilter={setArrearsFilter}
+          sortOption={sortOption}
+          setSortOption={setSortOption}
         />
       </div>
 

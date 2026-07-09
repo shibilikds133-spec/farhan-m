@@ -22,6 +22,8 @@ interface AdminMemberFiltersProps {
   setTierFilter: (val: string) => void;
   arrearsFilter: string;
   setArrearsFilter: (val: string) => void;
+  sortOption: string;
+  setSortOption: (val: string) => void;
 }
 
 export function AdminMemberFilters({
@@ -37,6 +39,8 @@ export function AdminMemberFilters({
   setTierFilter,
   arrearsFilter,
   setArrearsFilter,
+  sortOption,
+  setSortOption,
 }: AdminMemberFiltersProps) {
   return (
     <div className="flex flex-col sm:flex-row gap-3">
@@ -51,6 +55,20 @@ export function AdminMemberFilters({
       </div>
       
       <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0">
+        <div className="relative min-w-[140px]">
+          <Select value={sortOption} onValueChange={setSortOption}>
+            <SelectTrigger className="w-full bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
+              <SelectValue placeholder="Sort By" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="newest">Newest First</SelectItem>
+              <SelectItem value="name-asc">Name (A-Z)</SelectItem>
+              <SelectItem value="name-desc">Name (Z-A)</SelectItem>
+              <SelectItem value="dues-desc">Highest Dues</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
         <div className="relative min-w-[140px]">
           <Select value={statusFilter} onValueChange={setStatusFilter}>
             <SelectTrigger className="w-full bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
