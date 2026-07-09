@@ -1,12 +1,16 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Member } from "@/lib/admin/admin-types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "next/navigation";
+import { Camera, Trash2, PlusCircle, User } from "lucide-react";
+import { toast } from "sonner";
+import Image from "next/image";
 
 interface MemberFormProps {
   initialData?: Member;
@@ -16,13 +20,64 @@ interface MemberFormProps {
 export function MemberForm({ initialData, isEdit }: MemberFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [phone, setPhone] = useState(initialData?.phone || "");
+  const [phoneError, setPhoneError] = useState("");
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  const [familyMembers, setFamilyMembers] = useState<{name: string, relation: string, age: string}[]>([]);
+
+  const validatePhone = (val: string) => {
+    setPhone(val);
+    if (val && !/^[0-9]{10}$/.test(val)) {
+      setPhoneError("Phone number must be exactly 10 digits");
+    } else {
+      setPhoneError("");
+    }
+  };
+
+  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error("Image size should be less than 5MB");
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPhotoPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const addFamilyMember = () => {
+    setFamilyMembers([...familyMembers, { name: "", relation: "", age: "" }]);
+  };
+
+  const removeFamilyMember = (index: number) => {
+    const newMembers = [...familyMembers];
+    newMembers.splice(index, 1);
+    setFamilyMembers(newMembers);
+  };
+
+  const updateFamilyMember = (index: number, field: string, value: string) => {
+    const newMembers = [...familyMembers];
+    newMembers[index] = { ...newMembers[index], [field]: value };
+    setFamilyMembers(newMembers);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (phoneError) {
+      toast.error("Please fix the validation errors before submitting.");
+      return;
+    }
     setIsSubmitting(true);
     // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false);
+      toast.success(isEdit ? "Member updated successfully!" : "Member created successfully!");
       router.push("/admin/members");
     }, 1000);
   };
@@ -30,6 +85,32 @@ export function MemberForm({ initialData, isEdit }: MemberFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-8 animate-in fade-in duration-300 pb-24">
       
+      {/* Photo Upload Section */}
+      <div className="flex flex-col items-center justify-center p-6 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <input 
+          type="file" 
+          ref={fileInputRef} 
+          className="hidden" 
+          accept="image/*"
+          onChange={handlePhotoUpload}
+        />
+        <div 
+          onClick={() => fileInputRef.current?.click()}
+          className="relative w-28 h-28 rounded-full border-4 border-slate-50 dark:border-slate-800 bg-slate-100 dark:bg-slate-800 flex items-center justify-center cursor-pointer overflow-hidden group shadow-sm transition-transform hover:scale-105"
+        >
+          {photoPreview ? (
+            <Image src={photoPreview} alt="Profile" fill className="object-cover" />
+          ) : (
+            <User className="w-12 h-12 text-slate-400" />
+          )}
+          <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+            <Camera className="w-8 h-8 text-white" />
+          </div>
+        </div>
+        <p className="text-sm font-medium text-slate-600 dark:text-slate-400 mt-4">Upload Profile Photo</p>
+        <p className="text-xs text-slate-500 mt-1">JPEG or PNG, Max 5MB</p>
+      </div>
+
       {/* 1. Basic Details */}
       <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
         <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">1. Basic Details</h3>
@@ -40,12 +121,32 @@ export function MemberForm({ initialData, isEdit }: MemberFormProps) {
           </div>
           <div className="space-y-2">
             <Label htmlFor="phone">Phone Number <span className="text-red-500">*</span></Label>
-            <Input id="phone" defaultValue={initialData?.phone} required placeholder="10-digit mobile number" pattern="[0-9]{10}" title="10 digit phone number" />
+            <Input 
+              id="phone" 
+              value={phone}
+              onChange={(e) => validatePhone(e.target.value)}
+              required 
+              placeholder="10-digit mobile number" 
+              className={phoneError ? "border-red-500 focus-visible:ring-red-500" : ""}
+            />
+            {phoneError && <p className="text-xs text-red-500 mt-1">{phoneError}</p>}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="altPhone">Alternate Phone</Label>
+            <Input id="altPhone" placeholder="Optional" />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="age">Age</Label>
+            <Input id="age" type="number" placeholder="e.g. 32" />
+          </div>
+          <div className="space-y-2 sm:col-span-2">
+            <Label htmlFor="address">Address</Label>
+            <Textarea id="address" placeholder="Full residential address" className="min-h-[80px]" />
           </div>
           <div className="space-y-2">
              <Label htmlFor="area">Area / Branch <span className="text-red-500">*</span></Label>
              <Select defaultValue={initialData?.area || ""}>
-                <SelectTrigger className="w-full h-10 px-3 rounded-md border border-slate-200 bg-white dark:bg-slate-800 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <SelectTrigger className="w-full h-10 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
                   <SelectValue placeholder="Select an area" />
                 </SelectTrigger>
                 <SelectContent>
@@ -73,7 +174,7 @@ export function MemberForm({ initialData, isEdit }: MemberFormProps) {
           <div className="space-y-2">
              <Label htmlFor="status">Status</Label>
              <Select defaultValue={initialData?.status || "active"}>
-                <SelectTrigger className="w-full h-10 px-3 rounded-md border border-slate-200 bg-white dark:bg-slate-800 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <SelectTrigger className="w-full h-10 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -85,7 +186,7 @@ export function MemberForm({ initialData, isEdit }: MemberFormProps) {
           <div className="space-y-2">
              <Label htmlFor="tier">Monthly Tier <span className="text-red-500">*</span></Label>
              <Select defaultValue={initialData?.monthlyTier || "flexible"}>
-                <SelectTrigger className="w-full h-10 px-3 rounded-md border border-slate-200 bg-white dark:bg-slate-800 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <SelectTrigger className="w-full h-10 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
                   <SelectValue placeholder="Select Tier" />
                 </SelectTrigger>
                 <SelectContent>
@@ -100,6 +201,10 @@ export function MemberForm({ initialData, isEdit }: MemberFormProps) {
             <Label htmlFor="amount">Monthly Amount (₹) <span className="text-red-500">*</span></Label>
             <Input id="amount" type="number" min="50" defaultValue={initialData?.monthlyAmount || 50} required />
           </div>
+          <div className="space-y-2">
+            <Label htmlFor="joinedDate">Joined Date</Label>
+            <Input id="joinedDate" type="date" />
+          </div>
         </div>
       </div>
 
@@ -107,14 +212,20 @@ export function MemberForm({ initialData, isEdit }: MemberFormProps) {
       <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
         <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">3. Blood Donor Profile</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="space-y-2 flex items-center gap-2 mt-6">
-            <input type="checkbox" id="isDonor" defaultChecked={initialData?.isBloodDonor} className="w-4 h-4 rounded text-blue-600 border-slate-300 focus:ring-blue-500" />
-            <Label htmlFor="isDonor" className="mb-0 font-normal">Register as Blood Donor</Label>
+          <div className="space-y-3 flex flex-col mt-2">
+            <div className="flex items-center gap-2">
+              <input type="checkbox" id="isDonor" defaultChecked={initialData?.isBloodDonor} className="w-4 h-4 rounded text-red-600 border-slate-300 focus:ring-red-500" />
+              <Label htmlFor="isDonor" className="mb-0 font-normal">Register as Blood Donor</Label>
+            </div>
+            <div className="flex items-center gap-2">
+              <input type="checkbox" id="isAvailable" defaultChecked={true} className="w-4 h-4 rounded text-red-600 border-slate-300 focus:ring-red-500" />
+              <Label htmlFor="isAvailable" className="mb-0 font-normal">Available to donate now</Label>
+            </div>
           </div>
           <div className="space-y-2">
              <Label htmlFor="bloodGroup">Blood Group</Label>
              <Select defaultValue={initialData?.bloodGroup || ""}>
-                <SelectTrigger className="w-full h-10 px-3 rounded-md border border-slate-200 bg-white dark:bg-slate-800 dark:border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <SelectTrigger className="w-full h-10 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
                   <SelectValue placeholder="Select Group" />
                 </SelectTrigger>
                 <SelectContent>
@@ -131,10 +242,53 @@ export function MemberForm({ initialData, isEdit }: MemberFormProps) {
           </div>
         </div>
       </div>
-      
-      {/* 4. PIN & Access */}
+
+      {/* 4. Family Members */}
       <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">4. App Access & PIN</h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">4. Family Members</h3>
+          <Button type="button" variant="outline" size="sm" onClick={addFamilyMember} className="h-8 text-blue-600 border-blue-200 hover:bg-blue-50">
+            <PlusCircle className="w-4 h-4 mr-1" /> Add
+          </Button>
+        </div>
+        
+        {familyMembers.length === 0 ? (
+          <p className="text-sm text-slate-500 italic">No family members added. Click 'Add' to include dependents.</p>
+        ) : (
+          <div className="space-y-3">
+            {familyMembers.map((member, idx) => (
+              <div key={idx} className="flex flex-col sm:flex-row gap-3 items-start sm:items-center p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-100 dark:border-slate-800">
+                <Input 
+                  placeholder="Name" 
+                  value={member.name} 
+                  onChange={(e) => updateFamilyMember(idx, "name", e.target.value)}
+                  className="flex-1 bg-white dark:bg-slate-900" 
+                />
+                <Input 
+                  placeholder="Relation (e.g. Son)" 
+                  value={member.relation} 
+                  onChange={(e) => updateFamilyMember(idx, "relation", e.target.value)}
+                  className="w-full sm:w-32 bg-white dark:bg-slate-900" 
+                />
+                <Input 
+                  placeholder="Age" 
+                  type="number"
+                  value={member.age} 
+                  onChange={(e) => updateFamilyMember(idx, "age", e.target.value)}
+                  className="w-full sm:w-20 bg-white dark:bg-slate-900" 
+                />
+                <Button type="button" variant="ghost" size="icon" onClick={() => removeFamilyMember(idx)} className="text-red-500 hover:text-red-700 hover:bg-red-50 self-end sm:self-auto">
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      
+      {/* 5. PIN & Access */}
+      <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">5. App Access & PIN</h3>
         <div className="space-y-4">
           <div className="p-4 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-900/50">
             <p className="text-sm text-blue-800 dark:text-blue-300">
@@ -155,6 +309,12 @@ export function MemberForm({ initialData, isEdit }: MemberFormProps) {
             )}
           </div>
         </div>
+      </div>
+
+      {/* 6. Admin Notes */}
+      <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100 mb-4">6. Admin Notes</h3>
+        <Textarea placeholder="Any internal notes about this member? (Not visible to the member)" className="min-h-[100px]" />
       </div>
 
       {/* Sticky Footer */}

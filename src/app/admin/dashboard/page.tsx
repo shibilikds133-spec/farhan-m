@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { StatsCard } from "@/components/admin/dashboard/StatsCard";
 import { RecentPayments } from "@/components/admin/dashboard/RecentPayments";
+import { RecentCashHandovers } from "@/components/admin/dashboard/RecentCashHandovers";
 import { AdminActionIcon } from "@/components/admin/layout/AdminActionIcon";
 import { CollectionTrendChart } from "@/components/admin/dashboard/CollectionTrendChart";
 import { PaymentMethodChart } from "@/components/admin/dashboard/PaymentMethodChart";
@@ -145,7 +146,10 @@ export default function AdminDashboardPage() {
             <PaymentMethodChart data={stats.paymentMethodSplit} />
           </div>
 
-          <RecentPayments payments={MOCK_PAYMENTS} />
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <RecentPayments payments={MOCK_PAYMENTS} />
+            <RecentCashHandovers />
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
              <StatsCard 
