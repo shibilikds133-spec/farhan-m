@@ -133,13 +133,15 @@ export default function AdminDashboardPage() {
              </div>
           </div>
 
-          <StatsCard 
-            label="Available Blood Donors" 
-            metric={stats.availableDonors}
-            helper="Ready for emergency"
-            icon={Droplet}
-            variant="destructive"
-          />
+          <div>
+            <StatsCard 
+              label="Available Blood Donors" 
+              metric={stats.availableDonors}
+              helper="Ready for emergency"
+              icon={Droplet}
+              variant="destructive"
+            />
+          </div>
         </div>
       </div>
     </div>
