@@ -28,9 +28,26 @@ export function MemberForm({ initialData, isEdit }: MemberFormProps) {
   const [familyMembers, setFamilyMembers] = useState<{name: string, relation: string, age: string}[]>([]);
 
   const validatePhone = (val: string) => {
-    setPhone(val);
-    if (val && !/^[0-9]{10}$/.test(val)) {
-      setPhoneError("Phone number must be exactly 10 digits");
+    // Clean up spaces, dashes, parentheses
+    let cleanVal = val.replace(/[\s\-()]/g, '');
+    
+    // Auto-remove prefixes for Indian numbers
+    if (cleanVal.startsWith('+91') && cleanVal.length === 13) {
+      cleanVal = cleanVal.substring(3);
+    } else if (cleanVal.startsWith('91') && cleanVal.length === 12) {
+      cleanVal = cleanVal.substring(2);
+    } else if (cleanVal.startsWith('0') && cleanVal.length === 11) {
+      cleanVal = cleanVal.substring(1);
+    }
+
+    setPhone(cleanVal);
+    
+    // Validation: Allow 10 digits OR international format (e.g. +971501234567)
+    // Between 7 to 15 digits (plus optional '+' at the start)
+    const isValidFormat = /^(\+?[0-9]{7,15})$/.test(cleanVal);
+    
+    if (cleanVal && !isValidFormat) {
+      setPhoneError("Please enter a valid phone number (10 digits or international)");
     } else {
       setPhoneError("");
     }

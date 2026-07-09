@@ -77,6 +77,16 @@ export function PaymentsTable() {
     return method.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   };
 
+  const filteredPayments = MOCK_PAYMENTS.filter(payment => {
+    const searchLower = search.toLowerCase();
+    const matchesSearch = search === "" || 
+      payment.receiptId.toLowerCase().includes(searchLower) || 
+      payment.memberName.toLowerCase().includes(searchLower);
+    const matchesCategory = categoryFilter === "all" || payment.category === categoryFilter;
+    const matchesMethod = methodFilter === "all" || payment.method === methodFilter;
+    return matchesSearch && matchesCategory && matchesMethod;
+  });
+
   return (
     <div className="space-y-4">
       {/* Filters Bar */}
@@ -91,7 +101,7 @@ export function PaymentsTable() {
           />
         </div>
         
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 lg:pb-0">
+        <div className="flex items-center flex-wrap gap-2 pb-1 lg:pb-0">
           <div className="relative min-w-[140px]">
             <Select value={categoryFilter} onValueChange={setCategoryFilter}>
               <SelectTrigger className={cn(
@@ -129,11 +139,6 @@ export function PaymentsTable() {
               </SelectContent>
             </Select>
           </div>
-
-          <Button variant="outline" className="shrink-0 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
-            <SlidersHorizontal className="w-4 h-4 mr-2" />
-            Filters
-          </Button>
         </div>
       </div>
 
@@ -153,7 +158,7 @@ export function PaymentsTable() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
-              {MOCK_PAYMENTS.map((payment) => (
+              {filteredPayments.map((payment) => (
                 <tr key={payment.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors">
                   <td className="px-4 py-3">
                     <div className="font-medium text-slate-900 dark:text-slate-100">{payment.receiptId}</div>
@@ -203,7 +208,7 @@ export function PaymentsTable() {
 
       {/* Mobile Card View */}
       <div className="md:hidden space-y-3">
-        {MOCK_PAYMENTS.map((payment) => (
+        {filteredPayments.map((payment) => (
           <div key={payment.id} className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-3">
             <div className="flex justify-between items-start">
               <div>

@@ -1,22 +1,28 @@
 "use client";
 
-import React from "react";
-import { ChevronRight, Droplet, Clock } from "lucide-react";
+import React, { useState } from "react";
+import { ChevronRight, Droplet, Clock, CheckCircle2 } from "lucide-react";
 import { Member } from "@/lib/admin/admin-types";
 import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { AdminActionIcon } from "@/components/admin/layout/AdminActionIcon";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 interface AdminMemberCardProps {
   member: Member;
 }
 
 export function AdminMemberCard({ member }: AdminMemberCardProps) {
-  const isDefaulter = member.status === "inactive" || member.pinStatus === "reset_required";
+  const router = useRouter();
+  const [showPaymentWarning, setShowPaymentWarning] = useState(false);
+  const [isPaid, setIsPaid] = useState(false);
+
+  const isDefaulter = !isPaid && (member.status === "inactive" || member.pinStatus === "reset_required");
 
   return (
-    <Link 
-      href={`/admin/members/${member.id}`}
+    <div 
+      onClick={() => router.push(`/admin/members/${member.id}`)}
       className="block bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 mb-3 sm:hidden shadow-sm hover:shadow-md transition-all active:scale-[0.98] cursor-pointer"
     >
       <div className="flex justify-between items-start mb-3">
@@ -50,8 +56,18 @@ export function AdminMemberCard({ member }: AdminMemberCardProps) {
         <div>
           <div className="text-xs text-slate-500 mb-0.5">Status</div>
           {isDefaulter ? (
-             <div className="text-red-600 dark:text-red-400 flex items-center text-xs mt-0.5 font-medium">
-               <Clock className="w-3.5 h-3.5 mr-1" /> Overdue
+             <button 
+               onClick={(e) => {
+                 e.stopPropagation();
+                 setShowPaymentWarning(true);
+               }}
+               className="text-red-600 dark:text-red-400 flex items-center text-xs mt-0.5 font-medium bg-red-50 dark:bg-red-900/20 px-2 py-0.5 rounded cursor-pointer hover:underline w-fit"
+             >
+               <Clock className="w-3 h-3 mr-1" /> Overdue
+             </button>
+          ) : isPaid ? (
+             <div className="text-green-600 dark:text-green-400 flex items-center text-xs mt-0.5 font-medium bg-green-50 dark:bg-green-900/20 px-2 py-0.5 rounded w-fit">
+               <CheckCircle2 className="w-3 h-3 mr-1" /> Paid
              </div>
           ) : (
              <div className="text-slate-700 dark:text-slate-300 text-xs mt-0.5">Clear</div>
@@ -73,6 +89,45 @@ export function AdminMemberCard({ member }: AdminMemberCardProps) {
           <ChevronRight className="w-4 h-4 text-slate-400" />
         </AdminActionIcon>
       </div>
-    </Link>
+
+      {/* Warning Modal */}
+      {showPaymentWarning && (
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="bg-white dark:bg-slate-900 rounded-xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 animate-in zoom-in-95 duration-200 text-left">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100 mb-2">
+              Mark as Paid?
+            </h3>
+            <p className="text-slate-600 dark:text-slate-400 text-sm mb-6 leading-relaxed">
+              Are you sure you want to mark <span className="font-semibold text-slate-900 dark:text-slate-100">{member.name}</span>'s dues as paid? This will record a cash transaction.
+            </p>
+            <div className="flex justify-end gap-3">
+              <Button 
+                variant="outline" 
+                onClick={(e) => { 
+                  e.stopPropagation(); 
+                  setShowPaymentWarning(false); 
+                }}
+              >
+                Cancel
+              </Button>
+              <Button 
+                onClick={(e) => { 
+                  e.stopPropagation(); 
+                  setIsPaid(true);
+                  setShowPaymentWarning(false);
+                  toast.success(`Payment status for ${member.name} updated to Paid.`);
+                }} 
+                className="bg-blue-600 text-white hover:bg-blue-700"
+              >
+                Confirm Payment
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
