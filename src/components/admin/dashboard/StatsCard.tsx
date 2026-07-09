@@ -4,6 +4,7 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 interface StatsCardProps {
   label: string;
@@ -11,6 +12,7 @@ interface StatsCardProps {
   helper?: string;
   icon?: LucideIcon;
   variant?: "default" | "success" | "warning" | "destructive";
+  href?: string;
 }
 
 export function StatsCard({ 
@@ -18,7 +20,8 @@ export function StatsCard({
   metric, 
   helper, 
   icon: Icon,
-  variant = "default" 
+  variant = "default",
+  href
 }: StatsCardProps) {
   
   const variantStyles = {
@@ -35,8 +38,13 @@ export function StatsCard({
     destructive: "bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-300",
   };
 
-  return (
-    <Card className="shadow-sm border-slate-200 overflow-hidden dark:border-slate-700">
+  const isClickable = !!href;
+
+  const cardContent = (
+    <Card className={cn(
+      "shadow-sm border-slate-200 overflow-hidden dark:border-slate-700 h-full",
+      isClickable && "hover:shadow-md hover:-translate-y-1 hover:border-slate-300 dark:hover:border-slate-600 transition-all duration-200 cursor-pointer"
+    )}>
       <CardContent className="p-6">
         <div className="flex items-start justify-between">
           <div className="space-y-2">
@@ -59,4 +67,14 @@ export function StatsCard({
       </CardContent>
     </Card>
   );
+
+  if (isClickable) {
+    return (
+      <Link href={href} className="block h-full">
+        {cardContent}
+      </Link>
+    );
+  }
+
+  return cardContent;
 }

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 // Mock Data
@@ -51,6 +52,8 @@ const MOCK_PAYMENTS = [
 
 export function PaymentsTable() {
   const [search, setSearch] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [methodFilter, setMethodFilter] = useState("all");
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -90,8 +93,13 @@ export function PaymentsTable() {
         
         <div className="flex items-center gap-2 overflow-x-auto pb-1 lg:pb-0">
           <div className="relative min-w-[140px]">
-            <Select defaultValue="all">
-              <SelectTrigger className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
+            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+              <SelectTrigger className={cn(
+                "w-full transition-colors",
+                categoryFilter !== "all" 
+                  ? "bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/20 dark:border-blue-800 dark:text-blue-400" 
+                  : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800"
+              )}>
                 <SelectValue placeholder="Category" />
               </SelectTrigger>
               <SelectContent>
@@ -103,8 +111,13 @@ export function PaymentsTable() {
           </div>
 
           <div className="relative min-w-[140px]">
-            <Select defaultValue="all">
-              <SelectTrigger className="w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
+            <Select value={methodFilter} onValueChange={setMethodFilter}>
+              <SelectTrigger className={cn(
+                "w-full transition-colors",
+                methodFilter !== "all" 
+                  ? "bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-900/20 dark:border-blue-800 dark:text-blue-400" 
+                  : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800"
+              )}>
                 <SelectValue placeholder="Method" />
               </SelectTrigger>
               <SelectContent>

@@ -59,6 +59,7 @@ export default function AdminDashboardPage() {
           helper="This month"
           icon={TrendingUp}
           variant="success"
+          href="/admin/payments"
         />
         <StatsCard 
           label="Pending Amount" 
@@ -66,12 +67,14 @@ export default function AdminDashboardPage() {
           helper="Across all active members"
           icon={AlertOctagon}
           variant="destructive"
+          href="/admin/defaulters"
         />
         <StatsCard 
           label="Paid Members" 
           metric={stats.paidMembers}
           helper="Out of 168 active"
           icon={Users}
+          href="/admin/members"
         />
         <StatsCard 
           label="Cash Handovers" 
@@ -79,6 +82,7 @@ export default function AdminDashboardPage() {
           helper="Pending verification"
           icon={Banknote}
           variant="warning"
+          href="/admin/cash-entry"
         />
       </div>
 

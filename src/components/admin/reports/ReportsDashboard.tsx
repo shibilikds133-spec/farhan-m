@@ -6,6 +6,23 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Download, TrendingUp, Users, Banknote, Calendar } from "lucide-react";
 import { toast } from "sonner";
+import { CollectionTrendChart } from "@/components/admin/dashboard/CollectionTrendChart";
+import { PaymentMethodChart } from "@/components/admin/dashboard/PaymentMethodChart";
+
+const MOCK_COLLECTION_TREND = [
+  { month: "Jan", amount: 15000 },
+  { month: "Feb", amount: 18000 },
+  { month: "Mar", amount: 12000 },
+  { month: "Apr", amount: 25000 },
+  { month: "May", amount: 30000 },
+  { month: "Jun", amount: 22000 },
+];
+
+const MOCK_PAYMENT_METHODS = [
+  { method: "Cash", percentage: 40, color: "bg-emerald-500" },
+  { method: "UPI", percentage: 45, color: "bg-blue-500" },
+  { method: "Bank Transfer", percentage: 15, color: "bg-amber-500" },
+];
 
 export function ReportsDashboard() {
   const [reportType, setReportType] = useState("monthly");
@@ -102,16 +119,10 @@ export function ReportsDashboard() {
         </Card>
       </div>
 
-      {/* Chart Placeholders */}
+      {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="p-5 border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900 min-h-[300px] flex flex-col items-center justify-center text-slate-400">
-          <TrendingUp className="w-10 h-10 mb-3 opacity-20" />
-          <p>Collection Trend Chart Area</p>
-        </Card>
-        <Card className="p-5 border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900 min-h-[300px] flex flex-col items-center justify-center text-slate-400">
-          <Banknote className="w-10 h-10 mb-3 opacity-20" />
-          <p>Payment Method Split Chart Area</p>
-        </Card>
+        <CollectionTrendChart data={MOCK_COLLECTION_TREND} />
+        <PaymentMethodChart data={MOCK_PAYMENT_METHODS} />
       </div>
     </div>
   );
