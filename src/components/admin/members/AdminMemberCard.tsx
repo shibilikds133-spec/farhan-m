@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { MoreVertical, Droplet, Clock } from "lucide-react";
+import { ChevronRight, Droplet, Clock } from "lucide-react";
 import { Member } from "@/lib/admin/admin-types";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
@@ -15,7 +15,10 @@ export function AdminMemberCard({ member }: AdminMemberCardProps) {
   const isDefaulter = member.status === "inactive" || member.pinStatus === "reset_required";
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 mb-3 sm:hidden shadow-sm">
+    <Link 
+      href={`/admin/members/${member.id}`}
+      className="block bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 mb-3 sm:hidden shadow-sm hover:shadow-md transition-all active:scale-[0.98] cursor-pointer"
+    >
       <div className="flex justify-between items-start mb-3">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 font-medium">
@@ -66,12 +69,10 @@ export function AdminMemberCard({ member }: AdminMemberCardProps) {
           )}
         </div>
         
-        <Link href={`/admin/members/${member.id}`}>
-          <AdminActionIcon aria-label="View Details" className="h-8 w-8">
-            <MoreVertical className="w-4 h-4" />
-          </AdminActionIcon>
-        </Link>
+        <AdminActionIcon aria-label="View Details" className="h-8 w-8 pointer-events-none">
+          <ChevronRight className="w-4 h-4 text-slate-400" />
+        </AdminActionIcon>
       </div>
-    </div>
+    </Link>
   );
 }
