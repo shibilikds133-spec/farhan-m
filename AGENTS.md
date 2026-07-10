@@ -11,7 +11,11 @@ Before building, editing, redesigning, refactoring, or adding any page, route, l
 1. `UI_PLAN_V2.md`
 2. `Architecture_Plan.md`
 
-These two files together are mandatory. Do not follow only one.
+Before implementing, refactoring, replacing mocks, wiring APIs, creating database schema, adding Supabase migrations, writing RLS policies, changing authentication, or adding any backend-related feature, every agent must also read and follow:
+
+3. `Backend_Architecture_Supabase_Plan.md`
+
+These required specification files are mandatory. Do not follow only one.
 
 ## Authority
 

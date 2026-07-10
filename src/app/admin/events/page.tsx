@@ -29,7 +29,7 @@ export default function AdminEventsPage() {
       {/* Events List */}
       <div className="space-y-4">
         {events.map(event => (
-          <EventCard key={event.id} event={event} />
+          <EventCard key={event.id} event={event as any} />
         ))}
       </div>
       

@@ -22,6 +22,7 @@ interface PremiumReceiptCardProps {
   phone: string;
   amount: string | number;
   category: string;
+  customBg?: string;
 }
 
 export function PremiumReceiptCard({
@@ -31,6 +32,7 @@ export function PremiumReceiptCard({
   phone,
   amount,
   category,
+  customBg
 }: PremiumReceiptCardProps) {
   const [isDownloading, setIsDownloading] = useState(false);
   const [isSharing, setIsSharing] = useState(false);
@@ -126,12 +128,12 @@ export function PremiumReceiptCard({
       {/* Receipt Card Wrapper with exact aspect ratio of the SVG (775.5 x 960) */}
       <div
         ref={receiptRef}
-        className="relative w-full max-w-[400px] overflow-hidden shadow-2xl dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-white border border-white/50 transition-shadow duration-500"
+        className="relative w-full max-w-[400px] overflow-hidden shadow-2xl dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] print:shadow-none print:border-none print:max-w-[100mm] bg-white border border-white/50 transition-shadow duration-500"
         style={{ aspectRatio: "775.5 / 960" }}
       >
         {/* Background SVG */}
         <img 
-          src="/recept.svg" 
+          src={customBg || "/recept.svg"} 
           alt="SSF Receipt Background" 
           className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
           crossOrigin="anonymous"
@@ -157,8 +159,16 @@ export function PremiumReceiptCard({
           </div>
 
           {/* Donor Name (Center Area) */}
-          <div className="absolute top-[44.4%] left-0 w-full -translate-y-1/2 text-center px-12">
-            <h2 className="text-[1.55rem] sm:text-[1.75rem] font-bold text-[#1f1f1f] tracking-tight leading-none">
+          <div className="absolute top-[44.4%] left-0 w-full -translate-y-1/2 text-center px-8 sm:px-12 flex items-center justify-center">
+            <h2 
+              className={`font-bold text-[#1f1f1f] tracking-tight leading-tight line-clamp-2 ${
+                donorName.length > 26 
+                  ? "text-[1.15rem] sm:text-[1.3rem]" 
+                  : donorName.length > 20
+                  ? "text-[1.35rem] sm:text-[1.5rem]"
+                  : "text-[1.55rem] sm:text-[1.75rem]"
+              }`}
+            >
               {donorName}
             </h2>
           </div>

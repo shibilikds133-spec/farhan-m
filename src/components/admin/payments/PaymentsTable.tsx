@@ -9,46 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
-// Mock Data
-const MOCK_PAYMENTS = [
-  {
-    id: "pay_1",
-    receiptId: "REC-2026-07-001",
-    memberName: "Farhan M",
-    memberId: "SSF-101",
-    category: "monthly_dues",
-    method: "upi",
-    amount: 100,
-    status: "confirmed",
-    date: "04 Jul 2026",
-    months: ["July"],
-  },
-  {
-    id: "pay_2",
-    receiptId: "REC-2026-07-002",
-    memberName: "Shibili N",
-    memberId: "SSF-102",
-    category: "special_event",
-    method: "cash_handover",
-    amount: 500,
-    status: "confirmed",
-    date: "03 Jul 2026",
-    eventName: "Building Construction Fund",
-    collectedBy: "Farhan (President)"
-  },
-  {
-    id: "pay_3",
-    receiptId: "REC-2026-07-003",
-    memberName: "Safwan",
-    memberId: "SSF-103",
-    category: "monthly_dues",
-    method: "qr_code",
-    amount: 50,
-    status: "pending",
-    date: "02 Jul 2026",
-    months: ["July"],
-  }
-];
+import { MOCK_PAYMENTS } from "@/lib/admin/mock-data";
 
 export function PaymentsTable() {
   const [search, setSearch] = useState("");
@@ -77,6 +38,30 @@ export function PaymentsTable() {
     return method.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
   };
 
+  // Map central MOCK_PAYMENTS to the shape expected by the table
+  const tablePayments = MOCK_PAYMENTS.map(p => ({
+    id: p.id,
+    receiptId: p.receiptId,
+    memberName: p.payerName || "Unknown",
+    memberId: p.memberId || "N/A",
+    category: p.category,
+    method: p.method,
+    amount: p.amount,
+    status: p.status,
+    date: new Date(p.paidAt).toLocaleDateString("en-GB", { day: '2-digit', month: 'short', year: 'numeric' }),
+    eventName: p.eventName
+  }));
+
+  const filteredPayments = tablePayments.filter(payment => {
+    const searchLower = search.toLowerCase();
+    const matchesSearch = search === "" || 
+      payment.receiptId.toLowerCase().includes(searchLower) || 
+      payment.memberName.toLowerCase().includes(searchLower);
+    const matchesCategory = categoryFilter === "all" || payment.category === categoryFilter;
+    const matchesMethod = methodFilter === "all" || payment.method === methodFilter;
+    return matchesSearch && matchesCategory && matchesMethod;
+  });
+
   return (
     <div className="space-y-4">
       {/* Filters Bar */}
@@ -91,7 +76,7 @@ export function PaymentsTable() {
           />
         </div>
         
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 lg:pb-0">
+        <div className="flex items-center flex-wrap gap-2 pb-1 lg:pb-0">
           <div className="relative min-w-[140px]">
             <Select value={categoryFilter} onValueChange={setCategoryFilter}>
               <SelectTrigger className={cn(
@@ -129,11 +114,6 @@ export function PaymentsTable() {
               </SelectContent>
             </Select>
           </div>
-
-          <Button variant="outline" className="shrink-0 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
-            <SlidersHorizontal className="w-4 h-4 mr-2" />
-            Filters
-          </Button>
         </div>
       </div>
 
@@ -143,17 +123,17 @@ export function PaymentsTable() {
           <table className="w-full text-sm text-left">
             <thead className="bg-slate-50 dark:bg-slate-950/50 text-slate-500 dark:text-slate-400 font-medium border-b border-slate-200 dark:border-slate-800">
               <tr>
-                <th className="px-4 py-3 font-medium">Receipt ID & Date</th>
-                <th className="px-4 py-3 font-medium">Member</th>
-                <th className="px-4 py-3 font-medium">Category</th>
-                <th className="px-4 py-3 font-medium">Method</th>
-                <th className="px-4 py-3 font-medium text-right">Amount</th>
-                <th className="px-4 py-3 font-medium text-center">Status</th>
-                <th className="px-4 py-3 font-medium text-right">Actions</th>
+                <th className="px-4 py-3 font-medium">{"Receipt ID & Date"}</th>
+                <th className="px-4 py-3 font-medium">{"Member"}</th>
+                <th className="px-4 py-3 font-medium">{"Category"}</th>
+                <th className="px-4 py-3 font-medium">{"Method"}</th>
+                <th className="px-4 py-3 font-medium text-right">{"Amount"}</th>
+                <th className="px-4 py-3 font-medium text-center">{"Status"}</th>
+                <th className="px-4 py-3 font-medium text-right">{"Actions"}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
-              {MOCK_PAYMENTS.map((payment) => (
+              {filteredPayments.map((payment) => (
                 <tr key={payment.id} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors">
                   <td className="px-4 py-3">
                     <div className="font-medium text-slate-900 dark:text-slate-100">{payment.receiptId}</div>
@@ -183,13 +163,13 @@ export function PaymentsTable() {
                   <td className="px-4 py-3 text-right">
                     <div className="flex justify-end gap-2">
                       <Link href={`/receipt/${payment.id}`} target="_blank">
-                        <Button variant="ghost" size="icon" className="size-8 rounded-full text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20" title="View Public Receipt">
+                        <Button variant="ghost" size="icon" aria-label={`View public receipt for ${payment.receiptId}`} className="size-8 rounded-full text-slate-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20" title="View Public Receipt">
                           <ExternalLink className="size-4" />
                         </Button>
                       </Link>
                       <Link href={`/admin/payments/${payment.id}`}>
                         <Button variant="ghost" size="sm" className="h-8 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100 font-medium">
-                          Details &rarr;
+                          {"Details"}
                         </Button>
                       </Link>
                     </div>
@@ -203,7 +183,7 @@ export function PaymentsTable() {
 
       {/* Mobile Card View */}
       <div className="md:hidden space-y-3">
-        {MOCK_PAYMENTS.map((payment) => (
+        {filteredPayments.map((payment) => (
           <div key={payment.id} className="bg-white dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-3">
             <div className="flex justify-between items-start">
               <div>

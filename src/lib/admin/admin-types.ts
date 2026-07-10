@@ -21,6 +21,7 @@ export interface Member {
   pinStatus: "not_issued" | "issued" | "reset_required";
   joinedAt?: string;
   lastPaidAt?: string;
+  duesPending: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -109,7 +110,7 @@ export interface SupportContact {
   updatedAt: string;
 }
 
-export type AdminRole = "president" | "secretary" | "treasurer" | "collector" | "viewer";
+export type AdminRole = "super_admin" | "president" | "secretary" | "treasurer" | "collector" | "viewer";
 
 export interface AdminUser {
   id: string;
@@ -133,6 +134,8 @@ export interface AuditLogEntry {
   entityType: "member" | "payment" | "cash_handover" | "event" | "support_contact" | "admin_user" | "settings";
   entityId: string;
   summary: string;
+  ip?: string;
+  device?: string;
   before?: unknown;
   after?: unknown;
   createdAt: string;

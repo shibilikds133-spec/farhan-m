@@ -6,7 +6,6 @@ import { useSearchParams } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { PremiumReceiptCard } from "@/components/receipt/PremiumReceiptCard";
 
-import confetti from 'canvas-confetti';
 import Image from 'next/image';
 
 function SuccessPageContent() {
@@ -18,35 +17,7 @@ function SuccessPageContent() {
   const category = searchParams.get("category") || "dues";
   const source = searchParams.get("source");
 
-  React.useEffect(() => {
-    // Fire confetti on load without causing UI lag
-    const duration = 3000;
-    const end = Date.now() + duration;
 
-    const interval: any = setInterval(() => {
-      if (Date.now() > end) {
-        return clearInterval(interval);
-      }
-
-      // Olive Green, Blue, White
-      const customColors = ['#808000', '#2563EB', '#ffffff'];
-
-      confetti({
-        particleCount: 35,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0 },
-        colors: customColors
-      });
-      confetti({
-        particleCount: 35,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1 },
-        colors: customColors
-      });
-    }, 250);
-  }, []);
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-[#E6F0FA] to-[#F6F8FC] px-3 py-4 sm:px-6 sm:py-10 flex flex-col justify-between">

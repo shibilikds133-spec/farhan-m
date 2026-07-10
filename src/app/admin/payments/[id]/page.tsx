@@ -8,21 +8,38 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
+import { MOCK_PAYMENTS } from "@/lib/admin/mock-data";
 
 export default function PaymentDetailPage() {
   const params = useParams();
   const router = useRouter();
   
+  const [paymentStatus, setPaymentStatus] = useState(params.id === "pay_3" ? "Pending" : "Confirmed");
+
   // In a real app, fetch based on params.id
-  // Mock Data
-  const payment = {
+  // Find the actual payment
+  const actualPayment = MOCK_PAYMENTS.find(p => p.id === params.id);
+  
+  // Mock Data mapped to existing shape
+  const payment = actualPayment ? {
+    id: actualPayment.id,
+    receiptId: actualPayment.receiptId,
+    amount: actualPayment.amount,
+    memberName: actualPayment.payerName || "Unknown",
+    memberId: actualPayment.memberId || "N/A",
+    category: actualPayment.category === "monthly_dues" ? "Monthly Dues" : "Special Event",
+    date: new Date(actualPayment.paidAt).toLocaleDateString("en-GB", { day: '2-digit', month: 'short', year: 'numeric' }),
+    method: actualPayment.method.toUpperCase().replace("_", " "),
+    recordedBy: actualPayment.collectedByAdminName ? `${actualPayment.collectedByAdminName} (Admin)` : "Self",
+    recordedAt: new Date(actualPayment.recordedAt).toLocaleString(),
+    notes: actualPayment.notes || "No notes provided."
+  } : {
     id: params.id as string,
     receiptId: "REC-2026-07-001",
     amount: 100,
     memberName: "Farhan M",
     memberId: "SSF-101",
     category: "Monthly Dues",
-    status: "Confirmed",
     date: "04 Jul 2026",
     method: "UPI (Google Pay)",
     recordedBy: "Shibili N (Admin)",
@@ -70,8 +87,14 @@ export default function PaymentDetailPage() {
                  <div className="text-sm font-medium text-slate-500 mb-1">Total Amount</div>
                  <div className="text-4xl font-bold text-slate-900 dark:text-slate-100 font-mono tracking-tight">₹{payment.amount}</div>
                </div>
-               <Badge className="bg-green-50 text-green-700 border-green-200 shadow-none dark:bg-green-900/20 dark:text-green-400 dark:border-green-800 px-3 py-1 text-sm">
-                 {payment.status}
+               <Badge className={
+                 paymentStatus === "Confirmed" 
+                   ? "bg-green-50 text-green-700 border-green-200 shadow-none dark:bg-green-900/20 dark:text-green-400 dark:border-green-800 px-3 py-1 text-sm"
+                   : paymentStatus === "Pending"
+                   ? "bg-amber-50 text-amber-700 border-amber-200 shadow-none dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-800 px-3 py-1 text-sm"
+                   : "bg-red-50 text-red-700 border-red-200 shadow-none dark:bg-red-900/20 dark:text-red-400 dark:border-red-800 px-3 py-1 text-sm"
+               }>
+                 {paymentStatus}
                </Badge>
             </div>
 
@@ -121,8 +144,39 @@ export default function PaymentDetailPage() {
         <div className="space-y-6">
            <Card className="p-4 border-slate-200 dark:border-slate-800 shadow-sm bg-white dark:bg-slate-900">
              <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100 mb-3">Actions</h3>
+             
+             {paymentStatus === "Pending" && (
+               <div className="space-y-2 mb-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+                 <Button 
+                   className="w-full bg-green-600 hover:bg-green-700 text-white shadow-none" 
+                   onClick={() => { setPaymentStatus("Confirmed"); toast.success("Payment Approved"); }}
+                 >
+                   Approve Payment
+                 </Button>
+                 <Button 
+                   variant="outline" 
+                   className="w-full text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200 dark:border-red-900/50 dark:hover:bg-red-900/20 shadow-none"
+                   onClick={() => { setPaymentStatus("Rejected"); toast.error("Payment Rejected"); }}
+                 >
+                   Reject
+                 </Button>
+               </div>
+             )}
+
+             {paymentStatus === "Confirmed" && (
+               <div className="mb-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+                 <Button 
+                   variant="outline" 
+                   className="w-full text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200 dark:border-red-900/50 dark:hover:bg-red-900/20 shadow-none"
+                   onClick={() => { setPaymentStatus("Cancelled"); toast.info("Payment Cancelled"); }}
+                 >
+                   Cancel / Undo Payment
+                 </Button>
+               </div>
+             )}
+
              <Link href={`/receipt/${payment.id}`} target="_blank" className="block w-full">
-               <Button variant="outline" className="w-full justify-start text-blue-600 hover:text-blue-700 hover:bg-blue-50 border-blue-200 dark:border-blue-900/50 dark:hover:bg-blue-900/20 dark:text-blue-400">
+               <Button variant="outline" className="w-full justify-start text-blue-600 hover:text-blue-700 hover:bg-blue-50 border-blue-200 dark:border-blue-900/50 dark:hover:bg-blue-900/20 dark:text-blue-400 shadow-none">
                  <ExternalLink className="w-4 h-4 mr-2" />
                  View Public Receipt
                </Button>

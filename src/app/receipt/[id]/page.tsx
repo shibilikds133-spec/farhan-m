@@ -6,7 +6,6 @@ import { useSearchParams } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { PremiumReceiptCard } from "@/components/receipt/PremiumReceiptCard";
 
-import confetti from 'canvas-confetti';
 import Image from 'next/image';
 
 function ReceiptPageContent({ params }: { params: Promise<{ id: string }> }) {
@@ -21,41 +20,13 @@ function ReceiptPageContent({ params }: { params: Promise<{ id: string }> }) {
   const category = searchParams.get("category") || "dues";
   const source = searchParams.get("source");
 
-  React.useEffect(() => {
-    // Fire confetti on load without causing UI lag
-    const duration = 3000;
-    const end = Date.now() + duration;
 
-    const interval: any = setInterval(() => {
-      if (Date.now() > end) {
-        return clearInterval(interval);
-      }
-
-      // Olive Green, Blue, White
-      const customColors = ['#808000', '#2563EB', '#ffffff'];
-
-      confetti({
-        particleCount: 35,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0 },
-        colors: customColors
-      });
-      confetti({
-        particleCount: 35,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1 },
-        colors: customColors
-      });
-    }, 250);
-  }, []);
 
   return (
-    <main className="min-h-[100svh] overflow-x-hidden relative bg-[#F6F8FC] dark:bg-slate-950 px-4 pb-5 pt-4 sm:px-6 sm:py-10 flex flex-col transition-colors duration-500">
+    <main className="min-h-[100svh] overflow-x-hidden relative bg-[#F6F8FC] dark:bg-slate-950 px-4 pb-5 pt-4 sm:px-6 sm:py-10 flex flex-col transition-colors duration-500 print:bg-white print:p-0 print:min-h-0 print:items-center print:justify-start">
       
       {/* Light Mode Original Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#E6F0FA] to-[#F6F8FC] dark:hidden -z-20" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#E6F0FA] to-[#F6F8FC] dark:hidden -z-20 print:hidden" />
 
       {/* Dark Mode Glowing Orbs (for the blur effect to be visible) */}
       <div className="absolute inset-0 hidden dark:block -z-20 overflow-hidden pointer-events-none">
@@ -64,12 +35,12 @@ function ReceiptPageContent({ params }: { params: Promise<{ id: string }> }) {
       </div>
 
       {/* Glassmorphism layer */}
-      <div className="absolute inset-0 hidden dark:block backdrop-blur-3xl bg-slate-950/60 -z-10 transition-colors duration-500" />
+      <div className="absolute inset-0 hidden dark:block backdrop-blur-3xl bg-slate-950/60 -z-10 transition-colors duration-500 print:hidden" />
       
       <div className="mx-auto w-full max-w-[430px] sm:max-w-[620px] flex-1 flex flex-col justify-start sm:justify-center z-10">
         
         {/* Branding Header with Floating Back Button */}
-        <div className="relative mb-4 sm:mb-8 flex flex-col items-center justify-center">
+        <div className="relative mb-4 sm:mb-8 flex flex-col items-center justify-center print:hidden">
           <Link
             href={source === "member" ? "/member/dashboard" : "/"}
             className="absolute left-0 top-2 p-2.5 sm:p-3 text-slate-500 hover:text-slate-900 hover:bg-white/80 dark:hover:bg-slate-800/80 dark:text-slate-400 dark:hover:text-slate-100 rounded-full transition-colors print:hidden shadow-sm backdrop-blur-md border border-slate-200/50 dark:border-slate-700/50 bg-white/40 dark:bg-slate-900/40"
