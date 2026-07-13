@@ -89,3 +89,49 @@ Files modified:
 
 Notes:
 - This is a coordination/documentation artifact only. No implementation code, UI files, service files, adapter files, or contracts were changed.
+
+## Gemini - Phase 4 Supabase Adapters - 2026-07-13
+
+Completed:
+- Created Supabase adapter folder under `src/lib/backend/adapters/supabase/`.
+- Implemented repository adapters for members, payments, receipts, admin, audit, and dashboard stats.
+- Added DTO mapper files for member, payment, and admin data.
+- Kept Supabase imports isolated to adapter folder only.
+- Preserved Repository -> Service -> Adapter architecture.
+
+Files created:
+- `src/lib/backend/adapters/supabase/client.ts`
+- `src/lib/backend/adapters/supabase/mappers/member.mapper.ts`
+- `src/lib/backend/adapters/supabase/mappers/payment.mapper.ts`
+- `src/lib/backend/adapters/supabase/mappers/admin.mapper.ts`
+- `src/lib/backend/adapters/supabase/repositories/supabaseMemberRepository.ts`
+- `src/lib/backend/adapters/supabase/repositories/supabasePaymentRepository.ts`
+- `src/lib/backend/adapters/supabase/repositories/supabaseReceiptRepository.ts`
+- `src/lib/backend/adapters/supabase/repositories/supabaseAdminRepository.ts`
+- `src/lib/backend/adapters/supabase/repositories/supabaseAuditRepository.ts`
+- `src/lib/backend/adapters/supabase/repositories/supabaseAdminDashboardRepository.ts`
+- `src/lib/backend/adapters/supabase/index.ts`
+
+Verification:
+- `npx.cmd tsc --noEmit` passed.
+
+## Gemini - Phase 4 Fix Pass - 2026-07-13
+
+Completed:
+- Fixed payment amount resolution to prevent accidental zero-amount payment inserts.
+- Removed fake dashboard zero fallback behavior.
+- Improved storage portability by avoiding direct stored public URL mapping.
+- Fixed audit actor name handling.
+- Replaced timestamp-only receipt IDs with safer unique receipt ID generation.
+- Preserved Supabase adapter isolation and Repository -> Service -> Adapter architecture.
+
+Files modified:
+- `src/lib/backend/adapters/supabase/repositories/supabasePaymentRepository.ts`
+- `src/lib/backend/adapters/supabase/repositories/supabaseAdminDashboardRepository.ts`
+- `src/lib/backend/adapters/supabase/mappers/payment.mapper.ts`
+- `src/lib/backend/adapters/supabase/repositories/supabaseAuditRepository.ts`
+- `src/lib/backend/adapters/supabase/repositories/supabaseReceiptRepository.ts`
+- `BACKEND_PROGRESS.md`
+
+Verification:
+- `npx.cmd tsc --noEmit` passed.
