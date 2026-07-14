@@ -19,11 +19,6 @@ import type {
   MemberListFilters,
 } from "../dto/member.dto";
 
-export interface AdminLoginInput {
-  phone: string;
-  pinOrOtp?: string;
-}
-
 export interface AdminUserFilters {
   search?: string;
   role?: string;
@@ -47,7 +42,6 @@ export interface AdminRepository {
 }
 
 export interface AdminAuthService {
-  login(input: AdminLoginInput, actor: ActorContext): Promise<BackendResult<AdminSessionDTO>>;
   getCurrentAdmin(actor: ActorContext): Promise<BackendResult<AdminUserDTO>>;
   requirePermission(actor: ActorContext, permission: string): Promise<BackendResult<true>>;
 }

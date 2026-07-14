@@ -444,3 +444,36 @@ Notes/Next Steps:
 - Gemini may implement only the scope in `PHASE_7_AUTH_SESSION_PLAN.md`.
 - The existing UI remains unchanged during Phase 7. Mock identity replacement and the admin-panel code generation/reset endpoint are subsequent reviewed work.
 - Product decision clarified: after login, keep the session persistent across browser close/reopen; logout is the normal exit action. Account disable, code reset, or explicit admin revocation may still invalidate a session.
+
+## Codex - Phase 7 Review Fix Pass - 2026-07-14 18:40:05 +05:30
+
+Completed:
+- Preserved `TOO_MANY_ATTEMPTS` as the backend error code for member/admin login lockouts so the HTTP transport maps lockouts to `429`.
+- Reused the shared backend phone validation/normalization helper in the auth service.
+- Tightened member PIN and admin code validation to numeric-only formats.
+- Hardened Phase 7 `SECURITY DEFINER` functions with `SET search_path = public, pg_temp`.
+- Added sanitized proxy-aware IP extraction to request context so login/session rows can record request IP metadata.
+- Removed an unused variable from `resolveActor`.
+
+Files modified:
+- `src/lib/backend/adapters/supabase/repositories/supabaseAuthRepository.ts`
+- `src/lib/backend/services/authService.ts`
+- `src/lib/backend/http/requestContext.ts`
+- `src/lib/backend/auth/resolveActor.ts`
+- `supabase/migrations/015_auth_sessions.sql`
+- `BACKEND_PROGRESS.md`
+
+Verification:
+- `npx.cmd tsc --noEmit` passed.
+- Targeted Phase 7 ESLint passed.
+- `npm.cmd run build` was attempted but failed because the restricted local environment could not fetch Google Fonts (`Inter`, `Noto Sans Malayalam`, `Quicksand`) during Next.js font optimization. This is an environment/network limitation, not a Phase 7 code failure.
+- Local Next dev smoke tests were run for Phase 7 auth routes:
+  - `GET /api/v1/auth/session` without cookie returned `401 LOGIN_REQUIRED`.
+  - `POST /api/v1/auth/logout` without cookie returned `200 OK` and cleared `ssf_session`.
+  - `POST /api/v1/auth/member/login` with malformed payload returned `400 VALIDATION_FAILED`.
+  - `POST /api/v1/auth/admin/login` with malformed payload returned `400 VALIDATION_FAILED`.
+  - Full valid/invalid credential verification against Supabase is deferred until the Phase 7 migration is applied to a disposable/staging Supabase database with seeded hashed PIN/code data.
+
+
+- **Staging Verification**: Successfully deployed database migrations to Supabase Staging and configured Vercel Preview environment variables. Admin test user seeded.
+
